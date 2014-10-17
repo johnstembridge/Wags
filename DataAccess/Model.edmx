@@ -1,0 +1,1034 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Wags.Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="WagsModelStoreContainer">
+    <EntitySet Name="Players" EntityType="Wags.Model.Store.Players" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Courses" EntityType="Wags.Model.Store.Courses" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CourseData" EntityType="Wags.Model.Store.CourseData" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Events" EntityType="Wags.Model.Store.Events" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Trophies" EntityType="Wags.Model.Store.Trophies" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Bookings" EntityType="Wags.Model.Store.Bookings" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Guests" EntityType="Wags.Model.Store.Guests" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Histories" EntityType="Wags.Model.Store.Histories" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Transactions" EntityType="Wags.Model.Store.Transactions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Scores" EntityType="Wags.Model.Store.Scores" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Members" EntityType="Wags.Model.Store.Members" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Clubs" EntityType="Wags.Model.Store.Clubs" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Rounds" EntityType="Wags.Model.Store.Rounds" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Organisers" EntityType="Wags.Model.Store.Organisers" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="CourseCourseData" Association="Wags.Model.Store.CourseCourseData">
+      <End Role="Course" EntitySet="Courses" />
+      <End Role="CourseData" EntitySet="CourseData" />
+    </AssociationSet>
+    <AssociationSet Name="BookingGuest" Association="Wags.Model.Store.BookingGuest">
+      <End Role="Booking" EntitySet="Bookings" />
+      <End Role="Guest" EntitySet="Guests" />
+    </AssociationSet>
+    <AssociationSet Name="PlayerScore" Association="Wags.Model.Store.PlayerScore">
+      <End Role="Player" EntitySet="Players" />
+      <End Role="Score" EntitySet="Scores" />
+    </AssociationSet>
+    <AssociationSet Name="EventBooking" Association="Wags.Model.Store.EventBooking">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="Booking" EntitySet="Bookings" />
+    </AssociationSet>
+    <AssociationSet Name="PlayerHistory" Association="Wags.Model.Store.PlayerHistory">
+      <End Role="Player" EntitySet="Players" />
+      <End Role="History" EntitySet="Histories" />
+    </AssociationSet>
+    <AssociationSet Name="MemberTransaction" Association="Wags.Model.Store.MemberTransaction">
+      <End Role="Member" EntitySet="Members" />
+      <End Role="Transaction" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="MemberBooking" Association="Wags.Model.Store.MemberBooking">
+      <End Role="Member" EntitySet="Members" />
+      <End Role="Booking" EntitySet="Bookings" />
+    </AssociationSet>
+    <AssociationSet Name="MemberPlayer" Association="Wags.Model.Store.MemberPlayer">
+      <End Role="Member" EntitySet="Members" />
+      <End Role="Player" EntitySet="Players" />
+    </AssociationSet>
+    <AssociationSet Name="ClubCourse" Association="Wags.Model.Store.ClubCourse">
+      <End Role="Club" EntitySet="Clubs" />
+      <End Role="Course" EntitySet="Courses" />
+    </AssociationSet>
+    <AssociationSet Name="EventRound" Association="Wags.Model.Store.EventRound">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="Round" EntitySet="Rounds" />
+    </AssociationSet>
+    <AssociationSet Name="RoundScore" Association="Wags.Model.Store.RoundScore">
+      <End Role="Round" EntitySet="Rounds" />
+      <End Role="Score" EntitySet="Scores" />
+    </AssociationSet>
+    <AssociationSet Name="CourseRound" Association="Wags.Model.Store.CourseRound">
+      <End Role="Course" EntitySet="Courses" />
+      <End Role="Round" EntitySet="Rounds" />
+    </AssociationSet>
+    <AssociationSet Name="EventTrophy" Association="Wags.Model.Store.EventTrophy">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="Trophy" EntitySet="Trophies" />
+    </AssociationSet>
+    <AssociationSet Name="EventOrganiser" Association="Wags.Model.Store.EventOrganiser">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="Organiser" EntitySet="Organisers" />
+    </AssociationSet>
+    <AssociationSet Name="OrganiserMember" Association="Wags.Model.Store.OrganiserMember">
+      <End Role="Organiser" EntitySet="Organisers" />
+      <End Role="Member" EntitySet="Members" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Players">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Courses">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="ClubId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CourseData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EffectiveDate" Type="datetime" Nullable="false" />
+    <Property Name="SSS" Type="int" Nullable="true" />
+    <Property Name="Par" Type="int" Nullable="false" />
+    <Property Name="CourseId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Events">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="MemberPrice" Type="decimal" Nullable="true" Precision="6" Scale="2" />
+    <Property Name="GuestPrice" Type="decimal" Nullable="true" Precision="6" Scale="2" />
+    <Property Name="DinnerPrice" Type="decimal" Nullable="true" Precision="6" Scale="2" />
+    <Property Name="BookingDeadline" Type="datetime" Nullable="true" />
+    <Property Name="MaxPlayers" Type="int" Nullable="true" />
+    <Property Name="Schedule" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Notes" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Url" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Trophy_Id" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Trophies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Bookings">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Timestamp" Type="datetime" Nullable="false" />
+    <Property Name="Attending" Type="bit" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="EventId" Type="int" Nullable="false" />
+    <Property Name="MemberId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Guests">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Handicap" Type="decimal" Nullable="false" Precision="3" Scale="1" />
+    <Property Name="BookingId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Histories">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="Handicap" Type="decimal" Nullable="false" Precision="3" Scale="1" />
+    <Property Name="PlayerId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Transactions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DebitAmount" Type="decimal" Nullable="true" Precision="10" Scale="2" />
+    <Property Name="CreditAmount" Type="decimal" Nullable="true" Precision="10" Scale="2" />
+    <Property Name="MemberId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Scores">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Position" Type="int" Nullable="false" />
+    <Property Name="Shots" Type="int" Nullable="false" />
+    <Property Name="Points" Type="int" Nullable="false" />
+    <Property Name="PlayerId" Type="int" Nullable="false" />
+    <Property Name="RoundId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Members">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Phone" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Address_StreetAddress" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address_Country" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Address_PostCode" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Player_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Clubs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Url" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Phone" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Address_StreetAddress" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address_Country" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Address_PostCode" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Directions" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Rounds">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="EventId" Type="int" Nullable="false" />
+    <Property Name="CourseId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Organisers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EventId" Type="int" Nullable="false" />
+    <Property Name="Member_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="CourseCourseData">
+    <End Role="Course" Type="Wags.Model.Store.Courses" Multiplicity="1" />
+    <End Role="CourseData" Type="Wags.Model.Store.CourseData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Course">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CourseData">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BookingGuest">
+    <End Role="Booking" Type="Wags.Model.Store.Bookings" Multiplicity="0..1" />
+    <End Role="Guest" Type="Wags.Model.Store.Guests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Booking">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Guest">
+        <PropertyRef Name="BookingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PlayerScore">
+    <End Role="Player" Type="Wags.Model.Store.Players" Multiplicity="1" />
+    <End Role="Score" Type="Wags.Model.Store.Scores" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Player">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Score">
+        <PropertyRef Name="PlayerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventBooking">
+    <End Role="Event" Type="Wags.Model.Store.Events" Multiplicity="1" />
+    <End Role="Booking" Type="Wags.Model.Store.Bookings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="EventId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PlayerHistory">
+    <End Role="Player" Type="Wags.Model.Store.Players" Multiplicity="1" />
+    <End Role="History" Type="Wags.Model.Store.Histories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Player">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="History">
+        <PropertyRef Name="PlayerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MemberTransaction">
+    <End Role="Member" Type="Wags.Model.Store.Members" Multiplicity="1" />
+    <End Role="Transaction" Type="Wags.Model.Store.Transactions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="MemberId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MemberBooking">
+    <End Role="Member" Type="Wags.Model.Store.Members" Multiplicity="1" />
+    <End Role="Booking" Type="Wags.Model.Store.Bookings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="MemberId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MemberPlayer">
+    <End Role="Member" Type="Wags.Model.Store.Members" Multiplicity="*" />
+    <End Role="Player" Type="Wags.Model.Store.Players" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Player">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Member">
+        <PropertyRef Name="Player_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClubCourse">
+    <End Role="Club" Type="Wags.Model.Store.Clubs" Multiplicity="1" />
+    <End Role="Course" Type="Wags.Model.Store.Courses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Club">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Course">
+        <PropertyRef Name="ClubId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventRound">
+    <End Role="Event" Type="Wags.Model.Store.Events" Multiplicity="1" />
+    <End Role="Round" Type="Wags.Model.Store.Rounds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Round">
+        <PropertyRef Name="EventId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoundScore">
+    <End Role="Round" Type="Wags.Model.Store.Rounds" Multiplicity="1" />
+    <End Role="Score" Type="Wags.Model.Store.Scores" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Round">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Score">
+        <PropertyRef Name="RoundId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CourseRound">
+    <End Role="Course" Type="Wags.Model.Store.Courses" Multiplicity="1" />
+    <End Role="Round" Type="Wags.Model.Store.Rounds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Course">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Round">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventTrophy">
+    <End Role="Event" Type="Wags.Model.Store.Events" Multiplicity="*" />
+    <End Role="Trophy" Type="Wags.Model.Store.Trophies" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Trophy">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Event">
+        <PropertyRef Name="Trophy_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventOrganiser">
+    <End Role="Event" Type="Wags.Model.Store.Events" Multiplicity="1" />
+    <End Role="Organiser" Type="Wags.Model.Store.Organisers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Organiser">
+        <PropertyRef Name="EventId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="OrganiserMember">
+    <End Role="Organiser" Type="Wags.Model.Store.Organisers" Multiplicity="*" />
+    <End Role="Member" Type="Wags.Model.Store.Members" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Organiser">
+        <PropertyRef Name="Member_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Wags.Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="Players" EntityType="Wags.Model.Player" />
+          <EntitySet Name="Courses" EntityType="Wags.Model.Course" />
+          <EntitySet Name="CourseData" EntityType="Wags.Model.CourseData" />
+          <AssociationSet Name="CourseCourseData" Association="Wags.Model.CourseCourseData">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="CourseData" EntitySet="CourseData" />
+          </AssociationSet>
+          <EntitySet Name="Events" EntityType="Wags.Model.Event" />
+          <EntitySet Name="Trophies" EntityType="Wags.Model.Trophy" />
+          <EntitySet Name="Bookings" EntityType="Wags.Model.Booking" />
+          <EntitySet Name="Guests" EntityType="Wags.Model.Guest" />
+          <AssociationSet Name="BookingGuest" Association="Wags.Model.BookingGuest">
+            <End Role="Booking" EntitySet="Bookings" />
+            <End Role="Guest" EntitySet="Guests" />
+          </AssociationSet>
+          <EntitySet Name="Histories" EntityType="Wags.Model.History" />
+          <EntitySet Name="Transactions" EntityType="Wags.Model.Transaction" />
+          <EntitySet Name="Scores" EntityType="Wags.Model.Score" />
+          <AssociationSet Name="PlayerScore" Association="Wags.Model.PlayerScore">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Score" EntitySet="Scores" />
+          </AssociationSet>
+          <AssociationSet Name="EventBooking" Association="Wags.Model.EventBooking">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="PlayerHistory" Association="Wags.Model.PlayerHistory">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="History" EntitySet="Histories" />
+          </AssociationSet>
+          <EntitySet Name="Members" EntityType="Wags.Model.Member" />
+          <AssociationSet Name="MemberTransaction" Association="Wags.Model.MemberTransaction">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Transaction" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="MemberBooking" Association="Wags.Model.MemberBooking">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="MemberPlayer" Association="Wags.Model.MemberPlayer">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Player" EntitySet="Players" />
+          </AssociationSet>
+          <EntitySet Name="Clubs" EntityType="Wags.Model.Club" />
+          <AssociationSet Name="ClubCourse" Association="Wags.Model.ClubCourse">
+            <End Role="Club" EntitySet="Clubs" />
+            <End Role="Course" EntitySet="Courses" />
+          </AssociationSet>
+          <EntitySet Name="Rounds" EntityType="Wags.Model.Round" />
+          <AssociationSet Name="EventRound" Association="Wags.Model.EventRound">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="Round" EntitySet="Rounds" />
+          </AssociationSet>
+          <AssociationSet Name="RoundScore" Association="Wags.Model.RoundScore">
+            <End Role="Round" EntitySet="Rounds" />
+            <End Role="Score" EntitySet="Scores" />
+          </AssociationSet>
+          <AssociationSet Name="CourseRound" Association="Wags.Model.CourseRound">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Round" EntitySet="Rounds" />
+          </AssociationSet>
+          <AssociationSet Name="EventTrophy" Association="Wags.Model.EventTrophy">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="Trophy" EntitySet="Trophies" />
+          </AssociationSet>
+          <EntitySet Name="Organisers" EntityType="Wags.Model.Organiser" />
+          <AssociationSet Name="EventOrganiser" Association="Wags.Model.EventOrganiser">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="Organiser" EntitySet="Organisers" />
+          </AssociationSet>
+          <AssociationSet Name="OrganiserMember" Association="Wags.Model.OrganiserMember">
+            <End Role="Organiser" EntitySet="Organisers" />
+            <End Role="Member" EntitySet="Members" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" />
+          <NavigationProperty Name="Scores" Relationship="Wags.Model.PlayerScore" FromRole="Player" ToRole="Score" />
+          <NavigationProperty Name="Histories" Relationship="Wags.Model.PlayerHistory" FromRole="Player" ToRole="History" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" />
+          <NavigationProperty Name="Member" Relationship="Wags.Model.MemberPlayer" FromRole="Player" ToRole="Member" />
+        </EntityType>
+        <ComplexType Name="Address" >
+          <Property Type="String" Name="StreetAddress" Nullable="false" />
+          <Property Type="String" Name="Country" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="PostCode" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" />
+          <NavigationProperty Name="CourseData" Relationship="Wags.Model.CourseCourseData" FromRole="Course" ToRole="CourseData" />
+          <NavigationProperty Name="Club" Relationship="Wags.Model.ClubCourse" FromRole="Course" ToRole="Club" />
+          <Property Name="ClubId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rounds" Relationship="Wags.Model.CourseRound" FromRole="Course" ToRole="Round" />
+        </EntityType>
+        <EntityType Name="CourseData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EffectiveDate" Type="DateTime" Nullable="false" />
+          <Property Name="SSS" Type="Int32" Nullable="true" />
+          <NavigationProperty Name="Course" Relationship="Wags.Model.CourseCourseData" FromRole="CourseData" ToRole="Course" />
+          <Property Name="Par" Type="Int32" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="CourseCourseData">
+          <End Type="Wags.Model.Course" Role="Course" Multiplicity="1" />
+          <End Type="Wags.Model.CourseData" Role="CourseData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseData">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" />
+          <Property Name="MemberPrice" Type="Decimal" Nullable="true" Precision="6" Scale="2" />
+          <Property Name="GuestPrice" Type="Decimal" Nullable="true" Precision="6" Scale="2" />
+          <Property Name="DinnerPrice" Type="Decimal" Nullable="true" Precision="6" Scale="2" />
+          <Property Name="BookingDeadline" Type="DateTime" Nullable="true" />
+          <Property Name="MaxPlayers" Type="Int32" Nullable="true" />
+          <Property Name="Schedule" Type="String" Nullable="true" />
+          <Property Name="Notes" Type="String" Nullable="true" />
+          <NavigationProperty Name="Bookings" Relationship="Wags.Model.EventBooking" FromRole="Event" ToRole="Booking" />
+          <Property Name="Url" Type="String" Nullable="true" />
+          <NavigationProperty Name="Rounds" Relationship="Wags.Model.EventRound" FromRole="Event" ToRole="Round" />
+          <NavigationProperty Name="Trophy" Relationship="Wags.Model.EventTrophy" FromRole="Event" ToRole="Trophy" />
+          <NavigationProperty Name="Organisers" Relationship="Wags.Model.EventOrganiser" FromRole="Event" ToRole="Organiser" />
+        </EntityType>
+        <EntityType Name="Trophy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" />
+          <NavigationProperty Name="Event" Relationship="Wags.Model.EventTrophy" FromRole="Trophy" ToRole="Event" />
+        </EntityType>
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Timestamp" Nullable="false" Type="DateTime" />
+          <NavigationProperty Name="Guests" Relationship="Wags.Model.BookingGuest" FromRole="Booking" ToRole="Guest" />
+          <Property Name="Attending" Type="Boolean" Nullable="false" />
+          <Property Name="Comment" Type="String" Nullable="true" />
+          <Property Name="EventId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Event" Relationship="Wags.Model.EventBooking" FromRole="Booking" ToRole="Event" />
+          <NavigationProperty Name="Member" Relationship="Wags.Model.MemberBooking" FromRole="Booking" ToRole="Member" />
+          <Property Name="MemberId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" />
+          <Property Name="Handicap" Type="Decimal" Nullable="false" Precision="3" Scale="1" />
+          <NavigationProperty Name="Booking" Relationship="Wags.Model.BookingGuest" FromRole="Guest" ToRole="Booking" />
+          <Property Name="BookingId" Type="Int32" Nullable="true" />
+        </EntityType>
+        <Association Name="BookingGuest">
+          <End Type="Wags.Model.Booking" Role="Booking" Multiplicity="0..1" />
+          <End Type="Wags.Model.Guest" Role="Guest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Booking">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Guest">
+              <PropertyRef Name="BookingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EnumType Name="PlayerStatus" >
+          <Member Name="Guest" Value="0" />
+          <Member Name="Member" Value="1" />
+          <Member Name="ExWag" Value="2" />
+          <Member Name="Overseas" Value="3" />
+        </EnumType>
+        <EntityType Name="History">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="Status" Type="Wags.Model.PlayerStatus" Nullable="false" />
+          <Property Name="Handicap" Type="Decimal" Nullable="false" Precision="3" Scale="1" />
+          <NavigationProperty Name="Player" Relationship="Wags.Model.PlayerHistory" FromRole="History" ToRole="Player" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="DebitAmount" Type="Decimal" Nullable="true" Precision="10" Scale="2" />
+          <NavigationProperty Name="Member" Relationship="Wags.Model.MemberTransaction" FromRole="Transaction" ToRole="Member" />
+          <Property Name="CreditAmount" Type="Decimal" Nullable="true" Precision="10" Scale="2" />
+          <Property Name="MemberId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Score">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Position" Type="Int32" Nullable="false" />
+          <Property Name="Shots" Type="Int32" Nullable="false" />
+          <Property Name="Points" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Player" Relationship="Wags.Model.PlayerScore" FromRole="Score" ToRole="Player" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Round" Relationship="Wags.Model.RoundScore" FromRole="Score" ToRole="Round" />
+          <Property Name="RoundId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="PlayerScore">
+          <End Type="Wags.Model.Player" Role="Player" Multiplicity="1" />
+          <End Type="Wags.Model.Score" Role="Score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Score">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventBooking">
+          <End Type="Wags.Model.Event" Role="Event" Multiplicity="1" />
+          <End Type="Wags.Model.Booking" Role="Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlayerHistory">
+          <End Type="Wags.Model.Player" Role="Player" Multiplicity="1" />
+          <End Type="Wags.Model.History" Role="History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="true" MaxLength="255" />
+          <Property Name="Phone" Type="String" Nullable="true" MaxLength="255" />
+          <Property Name="Address" Type="Wags.Model.Address" Nullable="false" />
+          <NavigationProperty Name="Transactions" Relationship="Wags.Model.MemberTransaction" FromRole="Member" ToRole="Transaction" />
+          <NavigationProperty Name="Bookings" Relationship="Wags.Model.MemberBooking" FromRole="Member" ToRole="Booking" />
+          <NavigationProperty Name="Player" Relationship="Wags.Model.MemberPlayer" FromRole="Member" ToRole="Player" />
+          <NavigationProperty Name="Organiser" Relationship="Wags.Model.OrganiserMember" FromRole="Member" ToRole="Organiser" />
+        </EntityType>
+        <Association Name="MemberTransaction">
+          <End Type="Wags.Model.Member" Role="Member" Multiplicity="1" />
+          <End Type="Wags.Model.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MemberBooking">
+          <End Type="Wags.Model.Member" Role="Member" Multiplicity="1" />
+          <End Type="Wags.Model.Booking" Role="Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MemberPlayer">
+          <End Type="Wags.Model.Member" Role="Member" Multiplicity="0..1" />
+          <End Type="Wags.Model.Player" Role="Player" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Club">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" />
+          <Property Name="Url" Type="String" Nullable="true" />
+          <Property Name="Phone" Type="String" Nullable="true" MaxLength="255" />
+          <Property Name="Address" Type="Wags.Model.Address" Nullable="false" />
+          <Property Name="Directions" Type="String" Nullable="true" />
+          <NavigationProperty Name="Courses" Relationship="Wags.Model.ClubCourse" FromRole="Club" ToRole="Course" />
+        </EntityType>
+        <Association Name="ClubCourse">
+          <End Type="Wags.Model.Club" Role="Club" Multiplicity="1" />
+          <End Type="Wags.Model.Course" Role="Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Round">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Event" Relationship="Wags.Model.EventRound" FromRole="Round" ToRole="Event" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="EventId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Scores" Relationship="Wags.Model.RoundScore" FromRole="Round" ToRole="Score" />
+          <NavigationProperty Name="Course" Relationship="Wags.Model.CourseRound" FromRole="Round" ToRole="Course" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="EventRound">
+          <End Type="Wags.Model.Event" Role="Event" Multiplicity="1" />
+          <End Type="Wags.Model.Round" Role="Round" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Round">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RoundScore">
+          <End Type="Wags.Model.Round" Role="Round" Multiplicity="1" />
+          <End Type="Wags.Model.Score" Role="Score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Round">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Score">
+              <PropertyRef Name="RoundId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CourseRound">
+          <End Type="Wags.Model.Course" Role="Course" Multiplicity="1" />
+          <End Type="Wags.Model.Round" Role="Round" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Round">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventTrophy">
+          <End Type="Wags.Model.Event" Role="Event" Multiplicity="*" />
+          <End Type="Wags.Model.Trophy" Role="Trophy" Multiplicity="0..1" />
+        </Association>
+        <EntityType Name="Organiser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Event" Relationship="Wags.Model.EventOrganiser" FromRole="Organiser" ToRole="Event" />
+          <Property Name="EventId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Member" Relationship="Wags.Model.OrganiserMember" FromRole="Organiser" ToRole="Member" />
+        </EntityType>
+        <Association Name="EventOrganiser">
+          <End Type="Wags.Model.Event" Role="Event" Multiplicity="1" />
+          <End Type="Wags.Model.Organiser" Role="Organiser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Organiser">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OrganiserMember">
+          <End Type="Wags.Model.Organiser" Role="Organiser" Multiplicity="1" />
+          <End Type="Wags.Model.Member" Role="Member" Multiplicity="1" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WagsModelStoreContainer" CdmEntityContainer="ModelContainer">
+    <EntitySetMapping Name="Players">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Player)">
+        <MappingFragment StoreEntitySet="Players">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Courses">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Course)">
+        <MappingFragment StoreEntitySet="Courses">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ClubId" ColumnName="ClubId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CourseData">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.CourseData)">
+        <MappingFragment StoreEntitySet="CourseData">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+          <ScalarProperty Name="SSS" ColumnName="SSS" />
+          <ScalarProperty Name="Par" ColumnName="Par" />
+          <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Events">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Event)">
+        <MappingFragment StoreEntitySet="Events">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="MemberPrice" ColumnName="MemberPrice" />
+          <ScalarProperty Name="GuestPrice" ColumnName="GuestPrice" />
+          <ScalarProperty Name="DinnerPrice" ColumnName="DinnerPrice" />
+          <ScalarProperty Name="BookingDeadline" ColumnName="BookingDeadline" />
+          <ScalarProperty Name="MaxPlayers" ColumnName="MaxPlayers" />
+          <ScalarProperty Name="Schedule" ColumnName="Schedule" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trophies">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Trophy)">
+        <MappingFragment StoreEntitySet="Trophies">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Bookings">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Booking)">
+        <MappingFragment StoreEntitySet="Bookings">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="Attending" ColumnName="Attending" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="EventId" ColumnName="EventId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Guests">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Guest)">
+        <MappingFragment StoreEntitySet="Guests">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Handicap" ColumnName="Handicap" />
+          <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Histories">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.History)">
+        <MappingFragment StoreEntitySet="Histories">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Handicap" ColumnName="Handicap" />
+          <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Transactions">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Transaction)">
+        <MappingFragment StoreEntitySet="Transactions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DebitAmount" ColumnName="DebitAmount" />
+          <ScalarProperty Name="CreditAmount" ColumnName="CreditAmount" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Scores">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Score)">
+        <MappingFragment StoreEntitySet="Scores">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="Shots" ColumnName="Shots" />
+          <ScalarProperty Name="Points" ColumnName="Points" />
+          <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+          <ScalarProperty Name="RoundId" ColumnName="RoundId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Members">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Member)">
+        <MappingFragment StoreEntitySet="Members">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ComplexProperty Name="Address" TypeName="Wags.Model.Address">
+            <ScalarProperty Name="StreetAddress" ColumnName="Address_StreetAddress" />
+            <ScalarProperty Name="Country" ColumnName="Address_Country" />
+            <ScalarProperty Name="PostCode" ColumnName="Address_PostCode" />
+          </ComplexProperty>
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Clubs">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Club)">
+        <MappingFragment StoreEntitySet="Clubs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ComplexProperty Name="Address" TypeName="Wags.Model.Address">
+            <ScalarProperty Name="StreetAddress" ColumnName="Address_StreetAddress" />
+            <ScalarProperty Name="Country" ColumnName="Address_Country" />
+            <ScalarProperty Name="PostCode" ColumnName="Address_PostCode" />
+          </ComplexProperty>
+          <ScalarProperty Name="Directions" ColumnName="Directions" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rounds">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Round)">
+        <MappingFragment StoreEntitySet="Rounds">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="EventId" ColumnName="EventId" />
+          <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Organisers">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Organiser)">
+        <MappingFragment StoreEntitySet="Organisers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="EventId" ColumnName="EventId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="MemberPlayer" TypeName="Wags.Model.MemberPlayer" StoreEntitySet="Members">
+      <EndProperty Name="Player">
+        <ScalarProperty Name="Id" ColumnName="Player_Id" />
+      </EndProperty>
+      <EndProperty Name="Member">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="EventTrophy" TypeName="Wags.Model.EventTrophy" StoreEntitySet="Events">
+      <EndProperty Name="Trophy">
+        <ScalarProperty Name="Id" ColumnName="Trophy_Id" />
+      </EndProperty>
+      <EndProperty Name="Event">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="Trophy_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="OrganiserMember" TypeName="Wags.Model.OrganiserMember" StoreEntitySet="Organisers">
+      <EndProperty Name="Member">
+        <ScalarProperty Name="Id" ColumnName="Member_Id" />
+      </EndProperty>
+      <EndProperty Name="Organiser">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
