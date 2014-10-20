@@ -64,6 +64,7 @@ if (!loader.IsLazyLoadingEnabled(container))
 {
 #>
         this.Configuration.LazyLoadingEnabled = false;
+		this.Configuration.ProxyCreationEnabled = false;
 <#
 }
 

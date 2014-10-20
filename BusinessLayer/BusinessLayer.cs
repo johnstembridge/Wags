@@ -50,7 +50,7 @@ namespace Wags.BusinessLayer
             return GetMember(d => d.Player.FirstName == names[0] && d.Player.LastName == names[1]);
         }
 
-        private Member GetMember(Expression<Func<Member, bool>> where)
+        private Member GetMemberAll(Expression<Func<Member, bool>> where)
         {
             var nav = new Expression<Func<Member, object>>[]
             {
@@ -60,6 +60,11 @@ namespace Wags.BusinessLayer
                 d => d.Bookings
             };
             return _memberRepository.GetSingle(where, nav);          
+        }
+
+        private Member GetMember(Expression<Func<Member, bool>> where)
+        {
+            return _memberRepository.GetSingle(where, d => d.Player);          
         }
 
 	#endregion        

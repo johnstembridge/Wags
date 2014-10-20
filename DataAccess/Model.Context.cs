@@ -20,6 +20,7 @@ namespace Wags.DataAccess
             : base("name=ModelContainer")
         {
             this.Configuration.LazyLoadingEnabled = false;
+    		this.Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
