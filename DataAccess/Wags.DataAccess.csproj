@@ -96,6 +96,7 @@
     <ProjectReference Include="..\DataModel\Wags.DataModel.csproj">
       <Project>{a8c5ae1c-3e36-41d3-8403-d793bb48f186}</Project>
       <Name>Wags.DataModel</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

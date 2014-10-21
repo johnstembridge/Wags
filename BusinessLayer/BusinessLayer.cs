@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Wags.DataAccess;
 using Wags.DataModel;
@@ -30,6 +31,7 @@ namespace Wags.BusinessLayer
             _playerRepository = new PlayerRepository();
             _memberRepository = new MemberRepository();
             _courseRepository = new CourseRepository();
+            _historyRepository = new HistoryRepository();
         }
 
     #region Members
@@ -37,6 +39,13 @@ namespace Wags.BusinessLayer
 		public IList<Member> GetAllMembers()
         {
             return _memberRepository.GetAll(d => d.Player);
+        }
+
+		public IList<Member> GetAllCurrentMembers()
+        { 
+            return _memberRepository.GetList(
+                d => d.Player.Histories.OrderByDescending(h => h.Date).FirstOrDefault().Status == PlayerStatus.Member,
+                d => d.Player);
         }
 
         public Member GetMemberById(int id)
@@ -55,6 +64,7 @@ namespace Wags.BusinessLayer
             var nav = new Expression<Func<Member, object>>[]
             {
                 d => d.Player,
+                d => d.Player.Histories,
                 d => d.Player.Scores,
                 d => d.Transactions,
                 d => d.Bookings
@@ -65,6 +75,41 @@ namespace Wags.BusinessLayer
         private Member GetMember(Expression<Func<Member, bool>> where)
         {
             return _memberRepository.GetSingle(where, d => d.Player);          
+        }
+
+        public IList<History> GetMemberHistory(int id)
+        {
+            var nav = new Expression<Func<Member, object>>[]
+            {
+                d => d.Player,
+                d => d.Player.Histories
+            };
+            return _memberRepository.GetSingle(m => m.Id == id, nav).Player.Histories.ToList();
+        }
+
+        public History GetMemberCurrentStatus(int id)
+        {
+            var nav = new Expression<Func<Member, object>>[]
+            {
+                d => d.Player,
+                d => d.Player.Histories
+            };
+            return _memberRepository.GetSingle(m => m.Id == id, nav).CurrentStatus;
+        }
+
+        public IList<History> GetPlayerHistory(int id)
+        {
+            return _historyRepository.GetList(d => d.Player.Id == id);
+        }
+
+        public History GetPlayerCurrentStatus(int id)
+        {
+            return _playerRepository.GetSingle(p => p.Id == id, p => p.Histories).CurrentStatus;
+        }
+
+        public History GetPlayerStatusAtDate(int id, DateTime date)
+        {
+            return _playerRepository.GetSingle(p => p.Id == id, p => p.Histories).StatusAtDate(date);
         }
 
 	#endregion        
