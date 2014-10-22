@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
+using Wags.DataModel;
 
 namespace Wags.DataAccess
 {
-    public class GenericDataRepository<T> : IGenericDataRepository<T> where T : class
+    public class GenericDataRepository<T> : IGenericDataRepository<T> where T : class, IEntity
     {
         public virtual IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
@@ -67,23 +69,22 @@ namespace Wags.DataAccess
 
         public virtual void Add(params T[] items)
         {
-            using (var context = new ModelContainer())
-            {
-                foreach (T item in items)
-                {
-                    context.Entry(item).State = EntityState.Added;
-                }
-                context.SaveChanges();
-            }
+            Update(items);           
         }
 
         public virtual void Update(params T[] items)
         {
             using (var context = new ModelContainer())
             {
+                DbSet<T> dbSet = context.Set<T>();
                 foreach (T item in items)
                 {
-                    context.Entry(item).State = EntityState.Modified;
+                    dbSet.Add(item);
+                    foreach (DbEntityEntry<IEntity> entry in context.ChangeTracker.Entries<IEntity>())
+                    {
+                        IEntity entity = entry.Entity;
+                        entry.State = GetEntityState(entity.EntityState);
+                    }
                 }
                 context.SaveChanges();
             }
@@ -91,15 +92,25 @@ namespace Wags.DataAccess
 
         public virtual void Remove(params T[] items)
         {
-            using (var context = new ModelContainer())
-            {
-                foreach (T item in items)
-                {
-                    context.Entry(item).State = EntityState.Deleted;
-                }
-                context.SaveChanges();
-            }
+            Update(items);
         }
 
+        //Helper to convert between custom DataModel EntityState and System.Data.Entity.EntityState
+        protected static System.Data.Entity.EntityState GetEntityState(DataModel.EntityState entityState)
+        {
+            switch (entityState)
+            {
+                case DataModel.EntityState.Unchanged:
+                    return System.Data.Entity.EntityState.Unchanged;
+                case DataModel.EntityState.Added:
+                    return System.Data.Entity.EntityState.Added;
+                case DataModel.EntityState.Modified:
+                    return System.Data.Entity.EntityState.Modified;
+                case DataModel.EntityState.Deleted:
+                    return System.Data.Entity.EntityState.Deleted;
+                default:
+                    return System.Data.Entity.EntityState.Detached;
+            }
+        }
     }
 }

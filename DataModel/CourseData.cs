@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class CourseData
+    public partial class CourseData:IEntity
     {
         public int Id { get; set; }
         public System.DateTime EffectiveDate { get; set; }

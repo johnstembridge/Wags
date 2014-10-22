@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Round
+    public partial class Round:IEntity
     {
         public Round()
         {

@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Guest
+    public partial class Guest:IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

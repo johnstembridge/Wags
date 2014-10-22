@@ -12,7 +12,7 @@ namespace Wags.DataAccess
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using DataModel;
+    using Wags.DataModel; // Added because context expects the entity classes to be in it's namespace but we have moved them out to their own project/namespace
     
     public partial class ModelContainer : DbContext
     {

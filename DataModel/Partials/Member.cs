@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq.Expressions;
 
 namespace Wags.DataModel
 {
-    public partial class Member
+    public partial class Member:IEntity
     {
         public History CurrentStatus
         {
@@ -14,5 +13,7 @@ namespace Wags.DataModel
         {
             return Player.StatusAtDate(date);
         }
+
+        public EntityState EntityState { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Booking
+    public partial class Booking:IEntity
     {
         public Booking()
         {

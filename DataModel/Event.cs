@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Event
+    public partial class Event:IEntity
     {
         public Event()
         {

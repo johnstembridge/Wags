@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Course
+    public partial class Course:IEntity
     {
         public Course()
         {

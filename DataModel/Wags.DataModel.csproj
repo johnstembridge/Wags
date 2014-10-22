@@ -58,6 +58,7 @@
     <Compile Include="History.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="IEntity.cs" />
     <Compile Include="Member.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -69,9 +70,20 @@
     <Compile Include="Organiser.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Partials\Booking.cs" />
+    <Compile Include="Partials\Club.cs" />
+    <Compile Include="Partials\Course.cs" />
+    <Compile Include="Partials\CourseData.cs" />
+    <Compile Include="Partials\Event.cs" />
+    <Compile Include="Partials\Guest.cs" />
     <Compile Include="Partials\History.cs" />
+    <Compile Include="Partials\Organiser.cs" />
     <Compile Include="Partials\Player.cs" />
     <Compile Include="Partials\Member.cs" />
+    <Compile Include="Partials\Round.cs" />
+    <Compile Include="Partials\Score.cs" />
+    <Compile Include="Partials\Transaction.cs" />
+    <Compile Include="Partials\Trophy.cs" />
     <Compile Include="Player.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

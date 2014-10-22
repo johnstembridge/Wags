@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Wags.DataModel
 {
-    public partial class Player
+    public partial class Player:IEntity
     {
         public History CurrentStatus
         {
@@ -20,5 +20,7 @@ namespace Wags.DataModel
         {
             return string.Format("{0} {1}", FirstName, LastName);
         }
+
+        public EntityState EntityState { get; set; }
     }
 }

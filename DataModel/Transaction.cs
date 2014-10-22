@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Transaction
+    public partial class Transaction:IEntity
     {
         public int Id { get; set; }
         public System.DateTime Date { get; set; }

@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Club
+    public partial class Club:IEntity
     {
         public Club()
         {
