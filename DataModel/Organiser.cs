@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Organiser:IEntity
+    public partial class Organiser
     {
         public int Id { get; set; }
         public int EventId { get; set; }

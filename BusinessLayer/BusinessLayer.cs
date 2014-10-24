@@ -72,6 +72,11 @@ namespace Wags.BusinessLayer
             return _memberRepository.GetSingle(where, nav);          
         }
 
+        private Member GetMemberSimple(Expression<Func<Member, bool>> where)
+        {
+            return _memberRepository.GetSingle(where);          
+        }
+
         private Member GetMember(Expression<Func<Member, bool>> where)
         {
             return _memberRepository.GetSingle(where, d => d.Player);          
@@ -96,6 +101,12 @@ namespace Wags.BusinessLayer
             };
             return _memberRepository.GetSingle(m => m.Id == id, nav).CurrentStatus;
         }
+
+        public void UpdateMember(Member member)
+        {
+            _memberRepository.Update(member);
+        }
+
 
         public IList<History> GetPlayerHistory(int id)
         {

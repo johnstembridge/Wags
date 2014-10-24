@@ -86,6 +86,13 @@ namespace Wags.DataAccess
                         entry.State = GetEntityState(entity.EntityState);
                     }
                 }
+                //For some reason Relationship entities are set to state "added" which gives a multiplicity constraint error
+                var stateManager = ((IObjectContextAdapter)context).ObjectContext.ObjectStateManager;
+                var added = stateManager.GetObjectStateEntries(System.Data.Entity.EntityState.Added).ToList();
+                foreach (var objectStateEntry in added.Where(o => o.IsRelationship))
+                {
+                        objectStateEntry.ChangeState(System.Data.Entity.EntityState.Unchanged);
+                }
                 context.SaveChanges();
             }
         }

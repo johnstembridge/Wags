@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Trophy:IEntity
+    public partial class Trophy
     {
         public Trophy()
         {

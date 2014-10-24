@@ -15,6 +15,7 @@ namespace Wags.BusinessLayer.Test
             bl = new BusinessLayer();           
         }
 
+#region Member
         [TestMethod]
         public void GetCurrentMembers()
         {
@@ -33,7 +34,21 @@ namespace Wags.BusinessLayer.Test
             var current = bl.GetMemberCurrentStatus(6); // that's me
             Assert.AreEqual(PlayerStatus.Member, current.Status);
         }
+        
+        [TestMethod]
+        public void UpdateMember()
+        {
+            var member = bl.GetMemberById(6);
+            member.Phone = "07948 213164";
+            member.EntityState = EntityState.Modified;
+            member.Player.EntityState = EntityState.Modified;
+            bl.UpdateMember(member);
+        }
 
+#endregion
+
+#region Player
+		
         [TestMethod]
         public void GetPlayerStatus()
         {
@@ -55,5 +70,7 @@ namespace Wags.BusinessLayer.Test
             Assert.AreEqual(27, current.Handicap);
         }
 
+#endregion 
+    
     }
 }

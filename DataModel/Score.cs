@@ -12,7 +12,7 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Score:IEntity
+    public partial class Score
     {
         public int Id { get; set; }
         public int Position { get; set; }
