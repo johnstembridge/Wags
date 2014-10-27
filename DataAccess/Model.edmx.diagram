@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="200e077190d24e8e9cfed96998f1d8c7" Name="Diagram1" ZoomLevel="93" >
+      <Diagram DiagramId="200e077190d24e8e9cfed96998f1d8c7" Name="Diagram1" ZoomLevel="79" >
         <EntityTypeShape EntityType="Wags.Model.Player" Width="1.625" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="Wags.Model.Course" Width="1.5" PointX="11.25" PointY="0.5" />
         <EntityTypeShape EntityType="Wags.Model.CourseData" Width="1.5" PointX="13.125" PointY="0.5" />
@@ -19,10 +19,10 @@
         <EntityTypeShape EntityType="Wags.Model.Score" Width="1.5" PointX="7.5" PointY="0.5" />
         <AssociationConnector Association="Wags.Model.PlayerScore" />
         <AssociationConnector Association="Wags.Model.EventBooking" ManuallyRouted="true" >
-          <ConnectorPoint PointX="9.375" PointY="4.9130104952016929" />
-          <ConnectorPoint PointX="7.2112455743284558" PointY="4.9130104952016929" />
-          <ConnectorPoint PointX="7.2112455743284558" PointY="3.0893806333362157" />
-          <ConnectorPoint PointX="6.75" PointY="3.0893806333362157" />
+          <ConnectorPoint PointX="9.375" PointY="5.2279472168986461" />
+          <ConnectorPoint PointX="7.125" PointY="5.2279472168986461" />
+          <ConnectorPoint PointX="7.125" PointY="3.183004283167127" />
+          <ConnectorPoint PointX="6.75" PointY="3.183004283167127" />
         </AssociationConnector>
         <AssociationConnector Association="Wags.Model.PlayerHistory" />
         <EntityTypeShape EntityType="Wags.Model.Member" Width="1.625" PointX="2.875" PointY="0.75" />

@@ -42,10 +42,14 @@ namespace Wags.BusinessLayer
         }
 
 		public IList<Member> GetAllCurrentMembers()
-        { 
-            return _memberRepository.GetList(
+        {
+            var nav = new Expression<Func<Member, object>>[]
+            {
+                d => d.Player
+            };
+           return _memberRepository.GetList(
                 d => d.Player.Histories.OrderByDescending(h => h.Date).FirstOrDefault().Status == PlayerStatus.Member,
-                d => d.Player);
+                nav);
         }
 
         public Member GetMemberById(int id)
