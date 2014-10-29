@@ -12,16 +12,16 @@ namespace Wags.DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Member
+    public partial class Member : Player
     {
         public Member()
         {
             this.Transactions = new HashSet<Transaction>();
             this.Bookings = new HashSet<Booking>();
+            this.Events = new HashSet<Event>();
             this.Address = new Address();
         }
     
-        public int Id { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
     
@@ -29,7 +29,6 @@ namespace Wags.DataModel
     
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
-        public virtual Player Player { get; set; }
-        public virtual Organiser Organiser { get; set; }
+        public virtual ICollection<Event> Events { get; set; }
     }
 }

@@ -36,20 +36,20 @@ namespace Wags.BusinessLayer
 
     #region Members
 
-		public IList<Member> GetAllMembers()
+        public IList<Member> GetAllMembers()
         {
-            return _memberRepository.GetAll(d => d.Player);
+            return _memberRepository.GetAll();
         }
 
-		public IList<Member> GetAllCurrentMembers()
+        public IList<Member> GetAllCurrentMembers()
         {
             var nav = new Expression<Func<Member, object>>[]
             {
-                d => d.Player
+                d => d.Histories
             };
-           return _memberRepository.GetList(
-                d => d.Player.Histories.OrderByDescending(h => h.Date).FirstOrDefault().Status == PlayerStatus.Member,
-                nav);
+            return _memberRepository.GetList(
+                 d => d.Histories.OrderByDescending(h => h.Date).FirstOrDefault().Status == PlayerStatus.Member,
+                 nav);
         }
 
         public Member GetMemberById(int id)
@@ -60,50 +60,52 @@ namespace Wags.BusinessLayer
         public Member GetMemberByName(string name)
         {
             var names = name.Split(' ');
-            return GetMember(d => d.Player.FirstName == names[0] && d.Player.LastName == names[1]);
+            return GetMember(d => d.FirstName == names[0] && d.LastName == names[1]);
         }
 
         private Member GetMemberAll(Expression<Func<Member, bool>> where)
         {
             var nav = new Expression<Func<Member, object>>[]
             {
-                d => d.Player,
-                d => d.Player.Histories,
-                d => d.Player.Scores,
+                d => d.Histories,
+                d => d.Scores,
                 d => d.Transactions,
                 d => d.Bookings
             };
-            return _memberRepository.GetSingle(where, nav);          
+            return _memberRepository.GetSingle(where, nav);
         }
 
         private Member GetMemberSimple(Expression<Func<Member, bool>> where)
         {
-            return _memberRepository.GetSingle(where);          
+            return _memberRepository.GetSingle(where);
         }
 
         private Member GetMember(Expression<Func<Member, bool>> where)
         {
-            return _memberRepository.GetSingle(where, d => d.Player);          
+            return _memberRepository.GetSingle(where);
         }
 
         public IList<History> GetMemberHistory(int id)
         {
             var nav = new Expression<Func<Member, object>>[]
             {
-                d => d.Player,
-                d => d.Player.Histories
+                d => d.Histories
             };
-            return _memberRepository.GetSingle(m => m.Id == id, nav).Player.Histories.ToList();
+            return _memberRepository.GetSingle(m => m.Id == id, nav).Histories.ToList();
         }
 
         public History GetMemberCurrentStatus(int id)
         {
             var nav = new Expression<Func<Member, object>>[]
             {
-                d => d.Player,
-                d => d.Player.Histories
+                d => d.Histories
             };
             return _memberRepository.GetSingle(m => m.Id == id, nav).CurrentStatus;
+        }
+
+        public void AddMember(Member member)
+        {
+            _memberRepository.Add(member);
         }
 
         public void UpdateMember(Member member)
@@ -111,6 +113,22 @@ namespace Wags.BusinessLayer
             _memberRepository.Update(member);
         }
 
+        public void DeleteMember(int id)
+        {
+            var nav = new Expression<Func<Member, object>>[]
+            {
+                d => d.Histories,
+                d => d.Scores,
+                d => d.Transactions,
+                d => d.Bookings
+            };
+            var member = _memberRepository.GetSingle(m => m.Id == id, nav);
+            member.EntityState = EntityState.Deleted;
+            foreach (var hist in member.Histories)
+                hist.EntityState = EntityState.Deleted;
+            //etc.
+            _memberRepository.Remove(member);
+        }
 
         public IList<History> GetPlayerHistory(int id)
         {

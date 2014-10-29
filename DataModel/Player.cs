@@ -26,6 +26,5 @@ namespace Wags.DataModel
     
         public virtual ICollection<Score> Scores { get; set; }
         public virtual ICollection<History> Histories { get; set; }
-        public virtual Member Member { get; set; }
     }
 }

@@ -67,9 +67,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Organiser.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Partials\Booking.cs" />
     <Compile Include="Partials\Club.cs" />
     <Compile Include="Partials\Course.cs" />

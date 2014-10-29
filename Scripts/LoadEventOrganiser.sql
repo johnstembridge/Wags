@@ -1,6 +1,6 @@
 BULK
-INSERT Transactions
-FROM 'c:\data\transactions.txt'
+INSERT EventOrganiser
+FROM 'c:\data\eventorganiser.txt'
 WITH
 (
 FIELDTERMINATOR = '\t',

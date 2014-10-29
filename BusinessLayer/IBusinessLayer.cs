@@ -6,8 +6,8 @@ namespace Wags.BusinessLayer
     public interface IBusinessLayer
     {
         IList<Player> GetAllPlayers();
-        IList<Member> GetAllMembers();
-        Member GetMemberById(int id);
-        Member GetMemberByName(string name);
+        //IList<Member> GetAllMembers();
+        //Member GetMemberById(int id);
+        //Member GetMemberByName(string name);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Wags.DataModel;
 
@@ -25,24 +26,54 @@ namespace Wags.BusinessLayer.Test
         [TestMethod]
         public void GetMemberHistory()
         {
-            var history = bl.GetMemberHistory(6);
+            var history = bl.GetMemberHistory(12);
         }
 
         [TestMethod]
         public void GetMemberStatus()
         {
-            var current = bl.GetMemberCurrentStatus(6); // that's me
+            var current = bl.GetMemberCurrentStatus(12); // that's me
             Assert.AreEqual(PlayerStatus.Member, current.Status);
         }
-        
+
         [TestMethod]
         public void UpdateMember()
         {
-            var member = bl.GetMemberById(6);
+            var member = bl.GetMemberById(12);
             member.Phone = "07948 213164";
             member.EntityState = EntityState.Modified;
-            member.Player.EntityState = EntityState.Modified;
             bl.UpdateMember(member);
+        }
+
+        [TestMethod]
+        [Ignore]
+        public void AddMember()
+        {
+            var hist = new History()
+            {
+                Date = DateTime.Today,
+                Status = PlayerStatus.Member,
+                Handicap = 28,
+                EntityState = EntityState.Added
+            };
+            var member = new Member()
+            {
+                FirstName = "Joe",
+                LastName = "Blow",
+                Phone = "07948 213164",
+                Email = "joe.blow@gmail.com",
+                Address = new Address(){StreetAddress="1,The Road, The Town", PostCode="SW19 8XX"},
+                Histories = new List<History>(){hist}
+            };
+            member.EntityState = EntityState.Added;
+            bl.AddMember(member);
+            var newId = member.Id;
+        }
+        [TestMethod]
+        [Ignore]
+        public void RemoveMember()
+        {
+            bl.DeleteMember(375);
         }
 
 #endregion

@@ -1,7 +1,7 @@
 ﻿namespace Wags.DataModel
 {
-    public partial class Guest : IEntity
+    public partial class Guest : Player, IEntity
     {
-        public EntityState EntityState { get; set; }
+        //public EntityState EntityState { get; set; }
     }
 }

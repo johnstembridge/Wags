@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/15/2014 19:01:47
+-- Date Created: 10/29/2014 15:38:13
 -- Generated from EDMX file: D:\Wags\DataAccess\Model.edmx
 -- --------------------------------------------------
 
@@ -20,9 +20,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_CourseCourseData]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[CourseData] DROP CONSTRAINT [FK_CourseCourseData];
 GO
-IF OBJECT_ID(N'[dbo].[FK_BookingGuest]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Guests] DROP CONSTRAINT [FK_BookingGuest];
-GO
 IF OBJECT_ID(N'[dbo].[FK_PlayerScore]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Scores] DROP CONSTRAINT [FK_PlayerScore];
 GO
@@ -37,9 +34,6 @@ IF OBJECT_ID(N'[dbo].[FK_MemberTransaction]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_MemberBooking]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Bookings] DROP CONSTRAINT [FK_MemberBooking];
-GO
-IF OBJECT_ID(N'[dbo].[FK_MemberPlayer]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Members] DROP CONSTRAINT [FK_MemberPlayer];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ClubCourse]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Courses] DROP CONSTRAINT [FK_ClubCourse];
@@ -56,11 +50,17 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_EventTrophy]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Events] DROP CONSTRAINT [FK_EventTrophy];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EventOrganiser]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Organisers] DROP CONSTRAINT [FK_EventOrganiser];
+IF OBJECT_ID(N'[dbo].[FK_EventOrganiser_Event]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventOrganiser] DROP CONSTRAINT [FK_EventOrganiser_Event];
 GO
-IF OBJECT_ID(N'[dbo].[FK_OrganiserMember]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Organisers] DROP CONSTRAINT [FK_OrganiserMember];
+IF OBJECT_ID(N'[dbo].[FK_EventOrganiser_Member]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventOrganiser] DROP CONSTRAINT [FK_EventOrganiser_Member];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BookingGuest]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Guests] DROP CONSTRAINT [FK_BookingGuest];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Member_inherits_Player]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Players_Member] DROP CONSTRAINT [FK_Member_inherits_Player];
 GO
 
 -- --------------------------------------------------
@@ -85,9 +85,6 @@ GO
 IF OBJECT_ID(N'[dbo].[Bookings]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Bookings];
 GO
-IF OBJECT_ID(N'[dbo].[Guests]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Guests];
-GO
 IF OBJECT_ID(N'[dbo].[Histories]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Histories];
 GO
@@ -97,17 +94,20 @@ GO
 IF OBJECT_ID(N'[dbo].[Scores]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Scores];
 GO
-IF OBJECT_ID(N'[dbo].[Members]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Members];
-GO
 IF OBJECT_ID(N'[dbo].[Clubs]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Clubs];
 GO
 IF OBJECT_ID(N'[dbo].[Rounds]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Rounds];
 GO
-IF OBJECT_ID(N'[dbo].[Organisers]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Organisers];
+IF OBJECT_ID(N'[dbo].[Guests]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Guests];
+GO
+IF OBJECT_ID(N'[dbo].[Players_Member]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Players_Member];
+GO
+IF OBJECT_ID(N'[dbo].[EventOrganiser]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EventOrganiser];
 GO
 
 -- --------------------------------------------------
@@ -175,15 +175,6 @@ CREATE TABLE [dbo].[Bookings] (
 );
 GO
 
--- Creating table 'Guests'
-CREATE TABLE [dbo].[Guests] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(255)  NOT NULL,
-    [Handicap] decimal(3,1)  NOT NULL,
-    [BookingId] int  NULL
-);
-GO
-
 -- Creating table 'Histories'
 CREATE TABLE [dbo].[Histories] (
     [Id] int IDENTITY(1,1) NOT NULL,
@@ -216,27 +207,15 @@ CREATE TABLE [dbo].[Scores] (
 );
 GO
 
--- Creating table 'Members'
-CREATE TABLE [dbo].[Members] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Email] nvarchar(255)  NULL,
-    [Phone] nvarchar(255)  NULL,
-    [Address_StreetAddress] nvarchar(max)  NOT NULL,
-    [Address_Country] nvarchar(255)  NOT NULL,
-    [Address_PostCode] nvarchar(255)  NOT NULL,
-    [Player_Id] int  NOT NULL
-);
-GO
-
 -- Creating table 'Clubs'
 CREATE TABLE [dbo].[Clubs] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(255)  NOT NULL,
     [Url] nvarchar(max)  NULL,
     [Phone] nvarchar(255)  NULL,
-    [Address_StreetAddress] nvarchar(max)  NOT NULL,
-    [Address_Country] nvarchar(255)  NOT NULL,
-    [Address_PostCode] nvarchar(255)  NOT NULL,
+    [Address_StreetAddress] nvarchar(max)  NULL,
+    [Address_Country] nvarchar(255)  NULL,
+    [Address_PostCode] nvarchar(255)  NULL,
     [Directions] nvarchar(max)  NULL
 );
 GO
@@ -250,11 +229,30 @@ CREATE TABLE [dbo].[Rounds] (
 );
 GO
 
--- Creating table 'Organisers'
-CREATE TABLE [dbo].[Organisers] (
+-- Creating table 'Guests'
+CREATE TABLE [dbo].[Guests] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [EventId] int  NOT NULL,
-    [Member_Id] int  NOT NULL
+    [Name] nvarchar(max)  NOT NULL,
+    [Handicap] nvarchar(max)  NOT NULL,
+    [BookingId] int  NOT NULL
+);
+GO
+
+-- Creating table 'Players_Member'
+CREATE TABLE [dbo].[Players_Member] (
+    [Email] nvarchar(255)  NULL,
+    [Phone] nvarchar(255)  NULL,
+    [Address_StreetAddress] nvarchar(max)  NULL,
+    [Address_Country] nvarchar(255)  NULL,
+    [Address_PostCode] nvarchar(255)  NULL,
+    [Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'EventOrganiser'
+CREATE TABLE [dbo].[EventOrganiser] (
+    [Events_Id] int  NOT NULL,
+    [Organisers_Id] int  NOT NULL
 );
 GO
 
@@ -298,12 +296,6 @@ ADD CONSTRAINT [PK_Bookings]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Guests'
-ALTER TABLE [dbo].[Guests]
-ADD CONSTRAINT [PK_Guests]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'Histories'
 ALTER TABLE [dbo].[Histories]
 ADD CONSTRAINT [PK_Histories]
@@ -322,12 +314,6 @@ ADD CONSTRAINT [PK_Scores]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Members'
-ALTER TABLE [dbo].[Members]
-ADD CONSTRAINT [PK_Members]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'Clubs'
 ALTER TABLE [dbo].[Clubs]
 ADD CONSTRAINT [PK_Clubs]
@@ -340,10 +326,22 @@ ADD CONSTRAINT [PK_Rounds]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Organisers'
-ALTER TABLE [dbo].[Organisers]
-ADD CONSTRAINT [PK_Organisers]
+-- Creating primary key on [Id] in table 'Guests'
+ALTER TABLE [dbo].[Guests]
+ADD CONSTRAINT [PK_Guests]
     PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Players_Member'
+ALTER TABLE [dbo].[Players_Member]
+ADD CONSTRAINT [PK_Players_Member]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Events_Id], [Organisers_Id] in table 'EventOrganiser'
+ALTER TABLE [dbo].[EventOrganiser]
+ADD CONSTRAINT [PK_EventOrganiser]
+    PRIMARY KEY CLUSTERED ([Events_Id], [Organisers_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -362,20 +360,6 @@ ADD CONSTRAINT [FK_CourseCourseData]
 CREATE INDEX [IX_FK_CourseCourseData]
 ON [dbo].[CourseData]
     ([CourseId]);
-GO
-
--- Creating foreign key on [BookingId] in table 'Guests'
-ALTER TABLE [dbo].[Guests]
-ADD CONSTRAINT [FK_BookingGuest]
-    FOREIGN KEY ([BookingId])
-    REFERENCES [dbo].[Bookings]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_BookingGuest'
-CREATE INDEX [IX_FK_BookingGuest]
-ON [dbo].[Guests]
-    ([BookingId]);
 GO
 
 -- Creating foreign key on [PlayerId] in table 'Scores'
@@ -424,7 +408,7 @@ GO
 ALTER TABLE [dbo].[Transactions]
 ADD CONSTRAINT [FK_MemberTransaction]
     FOREIGN KEY ([MemberId])
-    REFERENCES [dbo].[Members]
+    REFERENCES [dbo].[Players_Member]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -438,7 +422,7 @@ GO
 ALTER TABLE [dbo].[Bookings]
 ADD CONSTRAINT [FK_MemberBooking]
     FOREIGN KEY ([MemberId])
-    REFERENCES [dbo].[Members]
+    REFERENCES [dbo].[Players_Member]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -446,20 +430,6 @@ ADD CONSTRAINT [FK_MemberBooking]
 CREATE INDEX [IX_FK_MemberBooking]
 ON [dbo].[Bookings]
     ([MemberId]);
-GO
-
--- Creating foreign key on [Player_Id] in table 'Members'
-ALTER TABLE [dbo].[Members]
-ADD CONSTRAINT [FK_MemberPlayer]
-    FOREIGN KEY ([Player_Id])
-    REFERENCES [dbo].[Players]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_MemberPlayer'
-CREATE INDEX [IX_FK_MemberPlayer]
-ON [dbo].[Members]
-    ([Player_Id]);
 GO
 
 -- Creating foreign key on [ClubId] in table 'Courses'
@@ -532,32 +502,50 @@ ON [dbo].[Events]
     ([Trophy_Id]);
 GO
 
--- Creating foreign key on [EventId] in table 'Organisers'
-ALTER TABLE [dbo].[Organisers]
-ADD CONSTRAINT [FK_EventOrganiser]
-    FOREIGN KEY ([EventId])
+-- Creating foreign key on [Events_Id] in table 'EventOrganiser'
+ALTER TABLE [dbo].[EventOrganiser]
+ADD CONSTRAINT [FK_EventOrganiser_Event]
+    FOREIGN KEY ([Events_Id])
     REFERENCES [dbo].[Events]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EventOrganiser'
-CREATE INDEX [IX_FK_EventOrganiser]
-ON [dbo].[Organisers]
-    ([EventId]);
 GO
 
--- Creating foreign key on [Member_Id] in table 'Organisers'
-ALTER TABLE [dbo].[Organisers]
-ADD CONSTRAINT [FK_OrganiserMember]
-    FOREIGN KEY ([Member_Id])
-    REFERENCES [dbo].[Members]
+-- Creating foreign key on [Organisers_Id] in table 'EventOrganiser'
+ALTER TABLE [dbo].[EventOrganiser]
+ADD CONSTRAINT [FK_EventOrganiser_Member]
+    FOREIGN KEY ([Organisers_Id])
+    REFERENCES [dbo].[Players_Member]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- Creating non-clustered index for FOREIGN KEY 'FK_OrganiserMember'
-CREATE INDEX [IX_FK_OrganiserMember]
-ON [dbo].[Organisers]
-    ([Member_Id]);
+-- Creating non-clustered index for FOREIGN KEY 'FK_EventOrganiser_Member'
+CREATE INDEX [IX_FK_EventOrganiser_Member]
+ON [dbo].[EventOrganiser]
+    ([Organisers_Id]);
+GO
+
+-- Creating foreign key on [BookingId] in table 'Guests'
+ALTER TABLE [dbo].[Guests]
+ADD CONSTRAINT [FK_BookingGuest]
+    FOREIGN KEY ([BookingId])
+    REFERENCES [dbo].[Bookings]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_BookingGuest'
+CREATE INDEX [IX_FK_BookingGuest]
+ON [dbo].[Guests]
+    ([BookingId]);
+GO
+
+-- Creating foreign key on [Id] in table 'Players_Member'
+ALTER TABLE [dbo].[Players_Member]
+ADD CONSTRAINT [FK_Member_inherits_Player]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Players]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------

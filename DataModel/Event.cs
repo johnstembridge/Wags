@@ -18,7 +18,7 @@ namespace Wags.DataModel
         {
             this.Bookings = new HashSet<Booking>();
             this.Rounds = new HashSet<Round>();
-            this.Organisers = new HashSet<Organiser>();
+            this.Organisers = new HashSet<Member>();
         }
     
         public int Id { get; set; }
@@ -36,6 +36,6 @@ namespace Wags.DataModel
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<Round> Rounds { get; set; }
         public virtual Trophy Trophy { get; set; }
-        public virtual ICollection<Organiser> Organisers { get; set; }
+        public virtual ICollection<Member> Organisers { get; set; }
     }
 }

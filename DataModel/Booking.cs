@@ -26,8 +26,8 @@ namespace Wags.DataModel
         public int EventId { get; set; }
         public int MemberId { get; set; }
     
-        public virtual ICollection<Guest> Guests { get; set; }
         public virtual Event Event { get; set; }
         public virtual Member Member { get; set; }
+        public virtual ICollection<Guest> Guests { get; set; }
     }
 }

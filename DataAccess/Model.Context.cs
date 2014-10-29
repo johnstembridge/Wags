@@ -34,13 +34,11 @@ namespace Wags.DataAccess
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<Trophy> Trophies { get; set; }
         public virtual DbSet<Booking> Bookings { get; set; }
-        public virtual DbSet<Guest> Guests { get; set; }
         public virtual DbSet<History> Histories { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Score> Scores { get; set; }
-        public virtual DbSet<Member> Members { get; set; }
         public virtual DbSet<Club> Clubs { get; set; }
         public virtual DbSet<Round> Rounds { get; set; }
-        public virtual DbSet<Organiser> Organisers { get; set; }
+        public virtual DbSet<Guest> Guests { get; set; }
     }
 }

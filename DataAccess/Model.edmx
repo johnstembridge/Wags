@@ -12,21 +12,17 @@
     <EntitySet Name="Events" EntityType="Wags.Model.Store.Events" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Trophies" EntityType="Wags.Model.Store.Trophies" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Bookings" EntityType="Wags.Model.Store.Bookings" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Guests" EntityType="Wags.Model.Store.Guests" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Histories" EntityType="Wags.Model.Store.Histories" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Transactions" EntityType="Wags.Model.Store.Transactions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Scores" EntityType="Wags.Model.Store.Scores" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Members" EntityType="Wags.Model.Store.Members" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Clubs" EntityType="Wags.Model.Store.Clubs" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Rounds" EntityType="Wags.Model.Store.Rounds" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Organisers" EntityType="Wags.Model.Store.Organisers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Guests" EntityType="Wags.Model.Store.Guests" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Players_Member" EntityType="Wags.Model.Store.Players_Member" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EventOrganiser" EntityType="Wags.Model.Store.EventOrganiser" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="CourseCourseData" Association="Wags.Model.Store.CourseCourseData">
       <End Role="Course" EntitySet="Courses" />
       <End Role="CourseData" EntitySet="CourseData" />
-    </AssociationSet>
-    <AssociationSet Name="BookingGuest" Association="Wags.Model.Store.BookingGuest">
-      <End Role="Booking" EntitySet="Bookings" />
-      <End Role="Guest" EntitySet="Guests" />
     </AssociationSet>
     <AssociationSet Name="PlayerScore" Association="Wags.Model.Store.PlayerScore">
       <End Role="Player" EntitySet="Players" />
@@ -41,16 +37,12 @@
       <End Role="History" EntitySet="Histories" />
     </AssociationSet>
     <AssociationSet Name="MemberTransaction" Association="Wags.Model.Store.MemberTransaction">
-      <End Role="Member" EntitySet="Members" />
+      <End Role="Member" EntitySet="Players_Member" />
       <End Role="Transaction" EntitySet="Transactions" />
     </AssociationSet>
     <AssociationSet Name="MemberBooking" Association="Wags.Model.Store.MemberBooking">
-      <End Role="Member" EntitySet="Members" />
+      <End Role="Member" EntitySet="Players_Member" />
       <End Role="Booking" EntitySet="Bookings" />
-    </AssociationSet>
-    <AssociationSet Name="MemberPlayer" Association="Wags.Model.Store.MemberPlayer">
-      <End Role="Member" EntitySet="Members" />
-      <End Role="Player" EntitySet="Players" />
     </AssociationSet>
     <AssociationSet Name="ClubCourse" Association="Wags.Model.Store.ClubCourse">
       <End Role="Club" EntitySet="Clubs" />
@@ -72,13 +64,21 @@
       <End Role="Event" EntitySet="Events" />
       <End Role="Trophy" EntitySet="Trophies" />
     </AssociationSet>
-    <AssociationSet Name="EventOrganiser" Association="Wags.Model.Store.EventOrganiser">
+    <AssociationSet Name="FK_EventOrganiser_Event" Association="Wags.Model.Store.FK_EventOrganiser_Event">
       <End Role="Event" EntitySet="Events" />
-      <End Role="Organiser" EntitySet="Organisers" />
+      <End Role="EventOrganiser" EntitySet="EventOrganiser" />
     </AssociationSet>
-    <AssociationSet Name="OrganiserMember" Association="Wags.Model.Store.OrganiserMember">
-      <End Role="Organiser" EntitySet="Organisers" />
-      <End Role="Member" EntitySet="Members" />
+    <AssociationSet Name="FK_EventOrganiser_Member" Association="Wags.Model.Store.FK_EventOrganiser_Member">
+      <End Role="Member" EntitySet="Players_Member" />
+      <End Role="EventOrganiser" EntitySet="EventOrganiser" />
+    </AssociationSet>
+    <AssociationSet Name="BookingGuest" Association="Wags.Model.Store.BookingGuest">
+      <End Role="Booking" EntitySet="Bookings" />
+      <End Role="Guest" EntitySet="Guests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Member_inherits_Player" Association="Wags.Model.Store.FK_Member_inherits_Player">
+      <End Role="Player" EntitySet="Players" />
+      <End Role="Member" EntitySet="Players_Member" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Players">
@@ -142,15 +142,6 @@
     <Property Name="EventId" Type="int" Nullable="false" />
     <Property Name="MemberId" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="Guests">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
-    <Property Name="Handicap" Type="decimal" Nullable="false" Precision="3" Scale="1" />
-    <Property Name="BookingId" Type="int" Nullable="true" />
-  </EntityType>
   <EntityType Name="Histories">
     <Key>
       <PropertyRef Name="Id" />
@@ -183,18 +174,6 @@
     <Property Name="PlayerId" Type="int" Nullable="false" />
     <Property Name="RoundId" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="Members">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Email" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Phone" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Address_StreetAddress" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Address_Country" Type="nvarchar" Nullable="false" MaxLength="255" />
-    <Property Name="Address_PostCode" Type="nvarchar" Nullable="false" MaxLength="255" />
-    <Property Name="Player_Id" Type="int" Nullable="false" />
-  </EntityType>
   <EntityType Name="Clubs">
     <Key>
       <PropertyRef Name="Id" />
@@ -203,9 +182,9 @@
     <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="Url" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Phone" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Address_StreetAddress" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Address_Country" Type="nvarchar" Nullable="false" MaxLength="255" />
-    <Property Name="Address_PostCode" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Address_StreetAddress" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Address_Country" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Address_PostCode" Type="nvarchar" Nullable="true" MaxLength="255" />
     <Property Name="Directions" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Rounds">
@@ -217,13 +196,33 @@
     <Property Name="EventId" Type="int" Nullable="false" />
     <Property Name="CourseId" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="Organisers">
+  <EntityType Name="Guests">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="EventId" Type="int" Nullable="false" />
-    <Property Name="Member_Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Handicap" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="BookingId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Players_Member">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Email" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Phone" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Address_StreetAddress" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Address_Country" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Address_PostCode" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventOrganiser">
+    <Key>
+      <PropertyRef Name="Events_Id" />
+      <PropertyRef Name="Organisers_Id" />
+    </Key>
+    <Property Name="Events_Id" Type="int" Nullable="false" />
+    <Property Name="Organisers_Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="CourseCourseData">
     <End Role="Course" Type="Wags.Model.Store.Courses" Multiplicity="1" />
@@ -234,18 +233,6 @@
       </Principal>
       <Dependent Role="CourseData">
         <PropertyRef Name="CourseId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="BookingGuest">
-    <End Role="Booking" Type="Wags.Model.Store.Bookings" Multiplicity="0..1" />
-    <End Role="Guest" Type="Wags.Model.Store.Guests" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Booking">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Guest">
-        <PropertyRef Name="BookingId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -286,7 +273,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="MemberTransaction">
-    <End Role="Member" Type="Wags.Model.Store.Members" Multiplicity="1" />
+    <End Role="Member" Type="Wags.Model.Store.Players_Member" Multiplicity="1" />
     <End Role="Transaction" Type="Wags.Model.Store.Transactions" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Member">
@@ -298,7 +285,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="MemberBooking">
-    <End Role="Member" Type="Wags.Model.Store.Members" Multiplicity="1" />
+    <End Role="Member" Type="Wags.Model.Store.Players_Member" Multiplicity="1" />
     <End Role="Booking" Type="Wags.Model.Store.Bookings" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Member">
@@ -306,18 +293,6 @@
       </Principal>
       <Dependent Role="Booking">
         <PropertyRef Name="MemberId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="MemberPlayer">
-    <End Role="Member" Type="Wags.Model.Store.Members" Multiplicity="*" />
-    <End Role="Player" Type="Wags.Model.Store.Players" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="Player">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Member">
-        <PropertyRef Name="Player_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -381,27 +356,53 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="EventOrganiser">
+  <Association Name="BookingGuest">
+    <End Role="Booking" Type="Wags.Model.Store.Bookings" Multiplicity="1" />
+    <End Role="Guest" Type="Wags.Model.Store.Guests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Booking">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Guest">
+        <PropertyRef Name="BookingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EventOrganiser_Event">
     <End Role="Event" Type="Wags.Model.Store.Events" Multiplicity="1" />
-    <End Role="Organiser" Type="Wags.Model.Store.Organisers" Multiplicity="*" />
+    <End Role="EventOrganiser" Type="Wags.Model.Store.EventOrganiser" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Event">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Organiser">
-        <PropertyRef Name="EventId" />
+      <Dependent Role="EventOrganiser">
+        <PropertyRef Name="Events_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="OrganiserMember">
-    <End Role="Organiser" Type="Wags.Model.Store.Organisers" Multiplicity="*" />
-    <End Role="Member" Type="Wags.Model.Store.Members" Multiplicity="1" />
+  <Association Name="FK_EventOrganiser_Member">
+    <End Role="EventOrganiser" Type="Wags.Model.Store.EventOrganiser" Multiplicity="*" />
+    <End Role="Member" Type="Wags.Model.Store.Players_Member" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Member">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Organiser">
-        <PropertyRef Name="Member_Id" />
+      <Dependent Role="EventOrganiser">
+        <PropertyRef Name="Organisers_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Member_inherits_Player">
+    <End Role="Player" Type="Wags.Model.Store.Players" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Member" Type="Wags.Model.Store.Players_Member" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Player">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Member">
+        <PropertyRef Name="Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -420,11 +421,6 @@
           <EntitySet Name="Events" EntityType="Wags.Model.Event" />
           <EntitySet Name="Trophies" EntityType="Wags.Model.Trophy" />
           <EntitySet Name="Bookings" EntityType="Wags.Model.Booking" />
-          <EntitySet Name="Guests" EntityType="Wags.Model.Guest" />
-          <AssociationSet Name="BookingGuest" Association="Wags.Model.BookingGuest">
-            <End Role="Booking" EntitySet="Bookings" />
-            <End Role="Guest" EntitySet="Guests" />
-          </AssociationSet>
           <EntitySet Name="Histories" EntityType="Wags.Model.History" />
           <EntitySet Name="Transactions" EntityType="Wags.Model.Transaction" />
           <EntitySet Name="Scores" EntityType="Wags.Model.Score" />
@@ -440,18 +436,13 @@
             <End Role="Player" EntitySet="Players" />
             <End Role="History" EntitySet="Histories" />
           </AssociationSet>
-          <EntitySet Name="Members" EntityType="Wags.Model.Member" />
           <AssociationSet Name="MemberTransaction" Association="Wags.Model.MemberTransaction">
-            <End Role="Member" EntitySet="Members" />
+            <End Role="Member" EntitySet="Players" />
             <End Role="Transaction" EntitySet="Transactions" />
           </AssociationSet>
           <AssociationSet Name="MemberBooking" Association="Wags.Model.MemberBooking">
-            <End Role="Member" EntitySet="Members" />
+            <End Role="Member" EntitySet="Players" />
             <End Role="Booking" EntitySet="Bookings" />
-          </AssociationSet>
-          <AssociationSet Name="MemberPlayer" Association="Wags.Model.MemberPlayer">
-            <End Role="Member" EntitySet="Members" />
-            <End Role="Player" EntitySet="Players" />
           </AssociationSet>
           <EntitySet Name="Clubs" EntityType="Wags.Model.Club" />
           <AssociationSet Name="ClubCourse" Association="Wags.Model.ClubCourse">
@@ -475,16 +466,16 @@
             <End Role="Event" EntitySet="Events" />
             <End Role="Trophy" EntitySet="Trophies" />
           </AssociationSet>
-          <EntitySet Name="Organisers" EntityType="Wags.Model.Organiser" />
           <AssociationSet Name="EventOrganiser" Association="Wags.Model.EventOrganiser">
             <End Role="Event" EntitySet="Events" />
-            <End Role="Organiser" EntitySet="Organisers" />
+            <End Role="Member" EntitySet="Players" />
           </AssociationSet>
-          <AssociationSet Name="OrganiserMember" Association="Wags.Model.OrganiserMember">
-            <End Role="Organiser" EntitySet="Organisers" />
-            <End Role="Member" EntitySet="Members" />
+          <EntitySet Name="Guests" EntityType="Wags.Model.Guest" />
+          <AssociationSet Name="BookingGuest" Association="Wags.Model.BookingGuest">
+            <End Role="Booking" EntitySet="Bookings" />
+            <End Role="Guest" EntitySet="Guests" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Player">
           <Key>
             <PropertyRef Name="Id" />
@@ -494,12 +485,11 @@
           <NavigationProperty Name="Scores" Relationship="Wags.Model.PlayerScore" FromRole="Player" ToRole="Score" />
           <NavigationProperty Name="Histories" Relationship="Wags.Model.PlayerHistory" FromRole="Player" ToRole="History" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" />
-          <NavigationProperty Name="Member" Relationship="Wags.Model.MemberPlayer" FromRole="Player" ToRole="Member" />
         </EntityType>
         <ComplexType Name="Address" >
-          <Property Type="String" Name="StreetAddress" Nullable="false" />
-          <Property Type="String" Name="Country" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="PostCode" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="StreetAddress" Nullable="true" />
+          <Property Type="String" Name="Country" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PostCode" Nullable="true" MaxLength="255" />
         </ComplexType>
         <EntityType Name="Course">
           <Key>
@@ -553,7 +543,7 @@
           <Property Name="Url" Type="String" Nullable="true" />
           <NavigationProperty Name="Rounds" Relationship="Wags.Model.EventRound" FromRole="Event" ToRole="Round" />
           <NavigationProperty Name="Trophy" Relationship="Wags.Model.EventTrophy" FromRole="Event" ToRole="Trophy" />
-          <NavigationProperty Name="Organisers" Relationship="Wags.Model.EventOrganiser" FromRole="Event" ToRole="Organiser" />
+          <NavigationProperty Name="Organisers" Relationship="Wags.Model.EventOrganiser" FromRole="Event" ToRole="Member" />
         </EntityType>
         <EntityType Name="Trophy">
           <Key>
@@ -569,36 +559,14 @@
           </Key>
           <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
           <Property Name="Timestamp" Nullable="false" Type="DateTime" />
-          <NavigationProperty Name="Guests" Relationship="Wags.Model.BookingGuest" FromRole="Booking" ToRole="Guest" />
           <Property Name="Attending" Type="Boolean" Nullable="false" />
           <Property Name="Comment" Type="String" Nullable="true" />
           <Property Name="EventId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Event" Relationship="Wags.Model.EventBooking" FromRole="Booking" ToRole="Event" />
           <NavigationProperty Name="Member" Relationship="Wags.Model.MemberBooking" FromRole="Booking" ToRole="Member" />
           <Property Name="MemberId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Guests" Relationship="Wags.Model.BookingGuest" FromRole="Booking" ToRole="Guest" />
         </EntityType>
-        <EntityType Name="Guest">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" />
-          <Property Name="Handicap" Type="Decimal" Nullable="false" Precision="3" Scale="1" />
-          <NavigationProperty Name="Booking" Relationship="Wags.Model.BookingGuest" FromRole="Guest" ToRole="Booking" />
-          <Property Name="BookingId" Type="Int32" Nullable="true" />
-        </EntityType>
-        <Association Name="BookingGuest">
-          <End Type="Wags.Model.Booking" Role="Booking" Multiplicity="0..1" />
-          <End Type="Wags.Model.Guest" Role="Guest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Booking">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Guest">
-              <PropertyRef Name="BookingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EnumType Name="PlayerStatus" >
           <Member Name="Guest" Value="0" />
           <Member Name="Member" Value="1" />
@@ -677,18 +645,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Member">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <EntityType Name="Member" BaseType="Wags.Model.Player">
           <Property Name="Email" Type="String" Nullable="true" MaxLength="255" />
           <Property Name="Phone" Type="String" Nullable="true" MaxLength="255" />
           <Property Name="Address" Type="Wags.Model.Address" Nullable="false" />
           <NavigationProperty Name="Transactions" Relationship="Wags.Model.MemberTransaction" FromRole="Member" ToRole="Transaction" />
           <NavigationProperty Name="Bookings" Relationship="Wags.Model.MemberBooking" FromRole="Member" ToRole="Booking" />
-          <NavigationProperty Name="Player" Relationship="Wags.Model.MemberPlayer" FromRole="Member" ToRole="Player" />
-          <NavigationProperty Name="Organiser" Relationship="Wags.Model.OrganiserMember" FromRole="Member" ToRole="Organiser" />
+          <NavigationProperty Name="Events" Relationship="Wags.Model.EventOrganiser" FromRole="Member" ToRole="Event" />
         </EntityType>
         <Association Name="MemberTransaction">
           <End Type="Wags.Model.Member" Role="Member" Multiplicity="1" />
@@ -713,10 +676,6 @@
               <PropertyRef Name="MemberId" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="MemberPlayer">
-          <End Type="Wags.Model.Member" Role="Member" Multiplicity="0..1" />
-          <End Type="Wags.Model.Player" Role="Player" Multiplicity="1" />
         </Association>
         <EntityType Name="Club">
           <Key>
@@ -794,30 +753,31 @@
           <End Type="Wags.Model.Event" Role="Event" Multiplicity="*" />
           <End Type="Wags.Model.Trophy" Role="Trophy" Multiplicity="0..1" />
         </Association>
-        <EntityType Name="Organiser">
+        <Association Name="EventOrganiser">
+          <End Type="Wags.Model.Event" Role="Event" Multiplicity="*" />
+          <End Type="Wags.Model.Member" Role="Member" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Guest">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Event" Relationship="Wags.Model.EventOrganiser" FromRole="Organiser" ToRole="Event" />
-          <Property Name="EventId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Member" Relationship="Wags.Model.OrganiserMember" FromRole="Organiser" ToRole="Member" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Handicap" Type="String" Nullable="false" />
+          <NavigationProperty Name="Booking" Relationship="Wags.Model.BookingGuest" FromRole="Guest" ToRole="Booking" />
+          <Property Name="BookingId" Type="Int32" Nullable="false" />
         </EntityType>
-        <Association Name="EventOrganiser">
-          <End Type="Wags.Model.Event" Role="Event" Multiplicity="1" />
-          <End Type="Wags.Model.Organiser" Role="Organiser" Multiplicity="*" />
+        <Association Name="BookingGuest">
+          <End Type="Wags.Model.Booking" Role="Booking" Multiplicity="1" />
+          <End Type="Wags.Model.Guest" Role="Guest" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Event">
+            <Principal Role="Booking">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Organiser">
-              <PropertyRef Name="EventId" />
+            <Dependent Role="Guest">
+              <PropertyRef Name="BookingId" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="OrganiserMember">
-          <End Type="Wags.Model.Organiser" Role="Organiser" Multiplicity="1" />
-          <End Type="Wags.Model.Member" Role="Member" Multiplicity="1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -831,6 +791,18 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="LastName" ColumnName="LastName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Member)">
+        <MappingFragment StoreEntitySet="Players_Member">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ComplexProperty Name="Address" TypeName="Wags.Model.Address">
+            <ScalarProperty Name="StreetAddress" ColumnName="Address_StreetAddress" />
+            <ScalarProperty Name="Country" ColumnName="Address_Country" />
+            <ScalarProperty Name="PostCode" ColumnName="Address_PostCode" />
+          </ComplexProperty>
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -891,16 +863,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Guests">
-      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Guest)">
-        <MappingFragment StoreEntitySet="Guests">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Handicap" ColumnName="Handicap" />
-          <ScalarProperty Name="BookingId" ColumnName="BookingId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Histories">
       <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.History)">
         <MappingFragment StoreEntitySet="Histories">
@@ -936,20 +898,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Members">
-      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Member)">
-        <MappingFragment StoreEntitySet="Members">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ComplexProperty Name="Address" TypeName="Wags.Model.Address">
-            <ScalarProperty Name="StreetAddress" ColumnName="Address_StreetAddress" />
-            <ScalarProperty Name="Country" ColumnName="Address_Country" />
-            <ScalarProperty Name="PostCode" ColumnName="Address_PostCode" />
-          </ComplexProperty>
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Clubs">
       <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Club)">
         <MappingFragment StoreEntitySet="Clubs">
@@ -976,22 +924,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Organisers">
-      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Organiser)">
-        <MappingFragment StoreEntitySet="Organisers">
+    <EntitySetMapping Name="Guests">
+      <EntityTypeMapping TypeName="IsTypeOf(Wags.Model.Guest)">
+        <MappingFragment StoreEntitySet="Guests">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="EventId" ColumnName="EventId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Handicap" ColumnName="Handicap" />
+          <ScalarProperty Name="BookingId" ColumnName="BookingId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="MemberPlayer" TypeName="Wags.Model.MemberPlayer" StoreEntitySet="Members">
-      <EndProperty Name="Player">
-        <ScalarProperty Name="Id" ColumnName="Player_Id" />
-      </EndProperty>
-      <EndProperty Name="Member">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="EventTrophy" TypeName="Wags.Model.EventTrophy" StoreEntitySet="Events">
       <EndProperty Name="Trophy">
         <ScalarProperty Name="Id" ColumnName="Trophy_Id" />
@@ -1001,12 +943,12 @@
       </EndProperty>
       <Condition ColumnName="Trophy_Id" IsNull="false" />
     </AssociationSetMapping>
-    <AssociationSetMapping Name="OrganiserMember" TypeName="Wags.Model.OrganiserMember" StoreEntitySet="Organisers">
-      <EndProperty Name="Member">
-        <ScalarProperty Name="Id" ColumnName="Member_Id" />
+    <AssociationSetMapping Name="EventOrganiser" TypeName="Wags.Model.EventOrganiser" StoreEntitySet="EventOrganiser">
+      <EndProperty Name="Event">
+        <ScalarProperty Name="Id" ColumnName="Events_Id" />
       </EndProperty>
-      <EndProperty Name="Organiser">
-        <ScalarProperty Name="Id" ColumnName="Id" />
+      <EndProperty Name="Member">
+        <ScalarProperty Name="Id" ColumnName="Organisers_Id" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
