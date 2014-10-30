@@ -18,7 +18,12 @@ namespace Wags.DataModel
 
         public override string ToString()
         {
-            return string.Format("{0} {1}", FirstName, LastName);
+            return FullName;
+        }
+
+        public string FullName
+        {
+            get { return string.Format("{0} {1}", FirstName, LastName); }
         }
 
         public EntityState EntityState { get; set; }

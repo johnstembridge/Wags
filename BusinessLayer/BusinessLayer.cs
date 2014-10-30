@@ -30,11 +30,13 @@ namespace Wags.BusinessLayer
         {
             _playerRepository = new PlayerRepository();
             _memberRepository = new MemberRepository();
+            _eventRepository = new EventRepository();
+            _bookingRepository = new BookingRepository();
             _courseRepository = new CourseRepository();
             _historyRepository = new HistoryRepository();
         }
 
-    #region Members
+#region Members
 
         public IList<Member> GetAllMembers()
         {
@@ -60,8 +62,11 @@ namespace Wags.BusinessLayer
         public Member GetMemberByName(string name)
         {
             var names = name.Split(' ');
-            return GetMember(d => d.FirstName == names[0] && d.LastName == names[1]);
-        }
+            var firstName = names[0];
+            var lastName = names[1];
+
+            return GetMember(d => d.FirstName == firstName && d.LastName == lastName);
+       }
 
         private Member GetMemberAll(Expression<Func<Member, bool>> where)
         {
@@ -130,6 +135,14 @@ namespace Wags.BusinessLayer
             _memberRepository.Remove(member);
         }
 
+#endregion        
+        
+#region Players
+		public IList<Player> GetAllPlayers()
+        {
+            return _playerRepository.GetAll();
+        }
+
         public IList<History> GetPlayerHistory(int id)
         {
             return _historyRepository.GetList(d => d.Player.Id == id);
@@ -145,23 +158,78 @@ namespace Wags.BusinessLayer
             return _playerRepository.GetSingle(p => p.Id == id, p => p.Histories).StatusAtDate(date);
         }
 
-	#endregion        
-        
-    #region Players
-		public IList<Player> GetAllPlayers()
+#endregion
+ 
+#region Events
+
+        public IList<Event> GetAllEvents()
         {
-            return _playerRepository.GetAll();
+            return _eventRepository.GetAll(d => d.Trophy);
         }
 
-	#endregion    
+        public IList<Event> GetAllEvents(int year)
+        {
+            return _eventRepository.GetList(d => d.Date.Year == year, d => d.Trophy);
+        }
+
+        public Event GetEvent(int id)
+        {
+            var nav = new Expression<Func<Event, object>>[]
+            {
+                d => d.Trophy,
+                d => d.Organisers,
+                d => d.Bookings,
+                d => d.Bookings.Select(b => b.Member),
+                d => d.Bookings.Select(b => b.Guests)
+            };  
+            return _eventRepository.GetSingle(d => d.Id == id, nav);
+        }
+
+		public Event GetEventResult(int id)
+        {
+            var nav = new Expression<Func<Event, object>>[]
+            {
+                d => d.Rounds,
+                d => d.Rounds.Select(r => r.Course),
+                d => d.Rounds.Select(r => r.Scores),
+                d => d.Rounds.Select(r => r.Scores.Select(s => s.Player)),
+                d => d.Rounds.Select(r => r.Scores.Select(s => s.Player).Select(p => p.Histories))
+            };  
+            return _eventRepository.GetSingle(d => d.Id == id, nav);
+        }
+
+#endregion
+
+    //<Booking>
+
+        public IList<Booking> GetBookingsForEvent(int eventId)
+        {
+            var nav = new Expression<Func<Booking, object>>[]
+            {
+                d => d.Event,
+                d => d.Member,
+                d => d.Guests
+            };  
+            return _bookingRepository.GetList(d => (d.Event.Id == eventId), nav);
+        }   
+    
+        public Booking GetBookingForEventAndMember(int eventId, int memberId)
+        {
+            var nav = new Expression<Func<Booking, object>>[]
+            {
+                d => d.Event,
+                d => d.Member,
+                d => d.Guests
+            };  
+            return _bookingRepository.GetSingle(d => (d.Event.Id == eventId) && (d.Member.Id == memberId), nav);
+        }   
+    
     }
 
-    //<Player>
     //<Course>
     //<CourseData> 
-    //<Event>
     //<Trophy>
-    //<Booking>
+
     //<Guest>
     //<History>
     //<Transaction>

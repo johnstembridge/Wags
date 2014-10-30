@@ -24,6 +24,18 @@ namespace Wags.BusinessLayer.Test
         }
 
         [TestMethod]
+        public void GetMember()
+        {
+            var member = bl.GetMemberById(12);
+        }
+
+        [TestMethod]
+        public void GetMemberByName()
+        {
+            var member = bl.GetMemberByName("Tony Batt");
+        }
+
+        [TestMethod]
         public void GetMemberHistory()
         {
             var history = bl.GetMemberHistory(12);
@@ -102,6 +114,48 @@ namespace Wags.BusinessLayer.Test
         }
 
 #endregion 
+ 
+#region Event
+
+        [TestMethod]
+        public void GetAllEvents()
+        {
+            var events = bl.GetAllEvents();
+        }
+        [TestMethod]
+        public void GetAllEventsForYear()
+        {
+            var events = bl.GetAllEvents(2014);
+        }
+
+        [TestMethod]
+        public void GetSingleEvent()
+        {
+            var ev = bl.GetEvent(178);
+        }
+
+        [TestMethod]
+        public void GetEventResult()
+        {
+            var res = bl.GetEventResult(178);
+        }
+
+        #endregion
+
+#region Booking
+		
+        [TestMethod]
+        public void GetBookingsForEvent()
+        {
+            var res = bl.GetBookingsForEvent(186);
+        }
+ 
+        [TestMethod]
+        public void GetBookingForEventAndMember()
+        {
+            var res = bl.GetBookingForEventAndMember(186, 12);
+        }
+#endregion
     
     }
 }
