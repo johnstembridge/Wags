@@ -18,7 +18,6 @@ namespace Wags.Services.Controllers
         {
             var bl = new BusinessLayer.BusinessLayer();
             var m = bl.GetMemberById(id);
-            m.Player.Member = null;
             return m;
         }
 

@@ -8,12 +8,11 @@ namespace Wags.DataModel
         public History CurrentStatus
         {
             get { return Histories.OrderByDescending(h => h.Date).FirstOrDefault(); }
-
         }
 
         public History StatusAtDate(DateTime date)
         {
-            return Histories.OrderByDescending(h => h.Date).FirstOrDefault(h => h.Date < date);
+            return Histories.OrderByDescending(h => h.Date).FirstOrDefault(h => h.Date <= date);
         }
 
         public override string ToString()

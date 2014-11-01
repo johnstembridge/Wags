@@ -16,7 +16,7 @@ namespace Wags.DataModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Handicap { get; set; }
+        public decimal Handicap { get; set; }
         public int BookingId { get; set; }
     
         public virtual Booking Booking { get; set; }

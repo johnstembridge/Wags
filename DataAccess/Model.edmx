@@ -201,8 +201,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Handicap" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Handicap" Type="decimal" Nullable="false" Precision="3" Scale="1" />
     <Property Name="BookingId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Players_Member">
@@ -762,8 +762,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" />
-          <Property Name="Handicap" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" />
+          <Property Name="Handicap" Type="Decimal" Nullable="false" Precision="3" Scale="1" />
           <NavigationProperty Name="Booking" Relationship="Wags.Model.BookingGuest" FromRole="Guest" ToRole="Booking" />
           <Property Name="BookingId" Type="Int32" Nullable="false" />
         </EntityType>

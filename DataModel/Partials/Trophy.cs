@@ -17,7 +17,9 @@ namespace Wags.DataModel
             get {
                 var baseUri = ConfigurationManager.AppSettings["StaticBaseUri"];
                 var uri = String.Format("{0}/images/trophies/{1}.jpg", baseUri, Name);
-                return new Uri(uri); }
+                return new Uri(uri); 
+            }
+            set { }
         }
 
         public Uri History {
@@ -26,6 +28,7 @@ namespace Wags.DataModel
                 var uri = String.Format("{0}/trophies/{1}/history", baseUri, Id);
                 return new Uri(uri); 
             } 
+            set { }
         }
     }
 }

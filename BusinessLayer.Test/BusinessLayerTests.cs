@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Wags.DataModel;
@@ -131,13 +132,13 @@ namespace Wags.BusinessLayer.Test
         [TestMethod]
         public void GetSingleEvent()
         {
-            var ev = bl.GetEvent(178);
+            var ev = bl.GetEvent(188);
         }
 
         [TestMethod]
         public void GetEventResult()
         {
-            var res = bl.GetEventResult(178);
+            var res = bl.GetEventResult(186);
         }
 
         #endregion
@@ -155,7 +156,49 @@ namespace Wags.BusinessLayer.Test
         {
             var res = bl.GetBookingForEventAndMember(186, 12);
         }
+
+        [TestMethod]
+        public void GetBooking()
+        {
+            var res = bl.GetBooking(240);
+        }
+
+        [TestMethod]
+        public void CreateBooking()
+        {
+            var booking = new Booking()
+            {
+                MemberId = 12,
+                EventId = 188,
+                Attending = true,
+                Comment = "can't make morning round"
+            };
+            var res = bl.AddBooking(booking);
+        }
+
+        [TestMethod]
+        public void UpdateBooking()
+        {
+            var booking = bl.GetBookingForEventAndMember(188, 12);
+            var guest = new Guest() 
+            {
+                Name = "Joe Blow",
+                Handicap = 22,
+                EntityState=EntityState.Added
+            };
+            booking.Guests.Add(guest);
+            var res = bl.UpdateBooking(booking);
+        }
+
+        [TestMethod]
+        public void RemoveBooking()
+        {
+            bl.DeleteBooking(279);
+        }
+
 #endregion
+
+        
     
     }
 }

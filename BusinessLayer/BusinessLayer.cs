@@ -200,7 +200,7 @@ namespace Wags.BusinessLayer
 
 #endregion
 
-    //<Booking>
+#region Bookings
 
         public IList<Booking> GetBookingsForEvent(int eventId)
         {
@@ -209,10 +209,21 @@ namespace Wags.BusinessLayer
                 d => d.Event,
                 d => d.Member,
                 d => d.Guests
-            };  
+            };
             return _bookingRepository.GetList(d => (d.Event.Id == eventId), nav);
-        }   
-    
+        }
+
+        public Booking GetBooking(int id)
+        {
+            var nav = new Expression<Func<Booking, object>>[]
+            {
+                d => d.Member,
+                d => d.Event,
+                d => d.Guests
+            };
+            return _bookingRepository.GetSingle(d => d.Id == id, nav);
+        }
+
         public Booking GetBookingForEventAndMember(int eventId, int memberId)
         {
             var nav = new Expression<Func<Booking, object>>[]
@@ -220,12 +231,39 @@ namespace Wags.BusinessLayer
                 d => d.Event,
                 d => d.Member,
                 d => d.Guests
-            };  
+            };
             return _bookingRepository.GetSingle(d => (d.Event.Id == eventId) && (d.Member.Id == memberId), nav);
-        }   
-    
-    }
+        }
 
+        public int AddBooking(Booking booking)
+        {
+            booking.Timestamp = DateTime.Now;
+            booking.EntityState = EntityState.Added;
+            foreach (var guest in booking.Guests)
+                guest.EntityState = EntityState.Added;
+            _bookingRepository.Add(booking);
+            return booking.Id;
+        }
+
+        public int UpdateBooking(Booking booking)
+        {
+            booking.Timestamp = DateTime.Now;
+            booking.EntityState = EntityState.Modified;
+            _bookingRepository.Update(booking);
+            return booking.Id;
+        }
+
+        public void DeleteBooking(int id)
+        {
+            var booking = GetBooking(id);
+            booking.EntityState = EntityState.Deleted;
+            foreach (var guest in booking.Guests)
+                guest.EntityState = EntityState.Deleted;
+            _bookingRepository.Remove(booking);
+        }
+    }
+    
+#endregion
     //<Course>
     //<CourseData> 
     //<Trophy>

@@ -1,6 +1,7 @@
+USE Wags
 BULK
 INSERT Transactions
-FROM 'c:\data\transactions.txt'
+FROM 'c:\Data\transactions.txt'
 WITH
 (
 FIELDTERMINATOR = '\t',

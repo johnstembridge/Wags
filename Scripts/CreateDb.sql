@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/29/2014 15:38:13
+-- Date Created: 10/31/2014 17:10:48
 -- Generated from EDMX file: D:\Wags\DataAccess\Model.edmx
 -- --------------------------------------------------
 
@@ -232,8 +232,8 @@ GO
 -- Creating table 'Guests'
 CREATE TABLE [dbo].[Guests] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [Handicap] nvarchar(max)  NOT NULL,
+    [Name] nvarchar(255)  NOT NULL,
+    [Handicap] decimal(3,1)  NOT NULL,
     [BookingId] int  NOT NULL
 );
 GO
