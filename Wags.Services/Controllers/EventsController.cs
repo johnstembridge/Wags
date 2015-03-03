@@ -9,35 +9,31 @@ using Wags.Services.Model;
 
 namespace Wags.Services.Controllers
 {
+    [RoutePrefix("api/events")]
     public class EventsController : ApiController
     {
-        //GET: api/events
-        public IEnumerable<Event> Get()
+        //GET: api/events?year=yr
+        public IEnumerable<Event> GetEventsForYear(int year = 0)
         {
             var bl = new BusinessLayer.BusinessLayer();
-            return bl.GetAllEvents();
+            return bl.GetAllEvents(year);
         }
 
-        // GET: api/events/5
-        //public Event Get(int id)
-        //{
-        //    var bl = new BusinessLayer.BusinessLayer();
-        //    var e = bl.GetEvent(id);
-        //    e.Trophy.Event = null;
-        //    foreach (var org in e.Organisers)
-        //        org.Events = null;
-        //    return e;
-        //}
+        // GET: api/events/5/details
+        [Route("{id:int}")]
+        public Event GetEventDetails(int id)
+        {
+            var bl = new BusinessLayer.BusinessLayer();
+            var e = bl.GetEventDetails(id);
+            return e;
+        }
 
-        // GET: api/events/5/Results
+        // GET: api/events/5/result
+        [Route("{id:int}/result")]
         public Report GetEventResult(int id)
         {
             var bl = new BusinessLayer.BusinessLayer();
             var e = bl.GetEventResult(id);
-            if (e.Trophy != null)
-                e.Trophy.Event = null;
-            foreach (var org in e.Organisers)
-                org.Events = null;
             var res = new Report()
             {
                 Title = e.ToString(),
@@ -52,6 +48,15 @@ namespace Wags.Services.Controllers
                     new List<object[]>()
             };
             return res;
+        }
+
+        // GET: api/events/5/bookings
+        [Route("{id:int}/bookings")]
+        public IEnumerable<Booking> GetBookingsForEvent(int id)
+        {
+            var bl = new BusinessLayer.BusinessLayer();
+            var b = bl.GetBookingsForEvent(id);
+            return b;
         }
 
         // POST: api/events

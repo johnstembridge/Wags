@@ -17,7 +17,7 @@ namespace Wags.DataModel
             get
             {
                 var baseUri = ConfigurationManager.AppSettings["ServiceBaseUri"];
-                var uri = String.Format("{0}/Events/Result/{1}", baseUri, Id);
+                var uri = String.Format("{0}/events/result/{1}", baseUri, Id);
                 return new Uri(uri);
             }
         }

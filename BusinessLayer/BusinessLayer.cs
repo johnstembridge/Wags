@@ -162,22 +162,31 @@ namespace Wags.BusinessLayer
  
 #region Events
 
-        public IList<Event> GetAllEvents()
+        public IEnumerable<Event> GetAllEvents()
         {
-            return _eventRepository.GetAll(d => d.Trophy);
+            return _eventRepository.GetAll(d => d.Trophy).OrderBy(d => d.Date);
         }
 
-        public IList<Event> GetAllEvents(int year)
+        public IEnumerable<Event> GetAllEvents(int year)
         {
-            return _eventRepository.GetList(d => d.Date.Year == year, d => d.Trophy);
+            if (year == 0) return GetAllEvents();
+            return _eventRepository.GetList(d => d.Date.Year == year, d => d.Trophy).OrderBy(d => d.Date);
         }
 
-        public Event GetEvent(int id)
+        public Event GetEventDetails(int id)
         {
             var nav = new Expression<Func<Event, object>>[]
             {
                 d => d.Trophy,
                 d => d.Organisers,
+            };  
+            return _eventRepository.GetSingle(d => d.Id == id, nav);
+        }
+
+        public Event GetEventBookings(int id)
+        {
+            var nav = new Expression<Func<Event, object>>[]
+            {
                 d => d.Bookings,
                 d => d.Bookings.Select(b => b.Member),
                 d => d.Bookings.Select(b => b.Guests)
@@ -206,7 +215,6 @@ namespace Wags.BusinessLayer
         {
             var nav = new Expression<Func<Booking, object>>[]
             {
-                d => d.Event,
                 d => d.Member,
                 d => d.Guests
             };
@@ -264,6 +272,7 @@ namespace Wags.BusinessLayer
     }
     
 #endregion
+
     //<Course>
     //<CourseData> 
     //<Trophy>

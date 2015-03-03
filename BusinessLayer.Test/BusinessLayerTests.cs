@@ -86,7 +86,7 @@ namespace Wags.BusinessLayer.Test
         [Ignore]
         public void RemoveMember()
         {
-            bl.DeleteMember(375);
+            bl.DeleteMember(372);
         }
 
 #endregion
@@ -123,6 +123,7 @@ namespace Wags.BusinessLayer.Test
         {
             var events = bl.GetAllEvents();
         }
+
         [TestMethod]
         public void GetAllEventsForYear()
         {
@@ -132,7 +133,7 @@ namespace Wags.BusinessLayer.Test
         [TestMethod]
         public void GetSingleEvent()
         {
-            var ev = bl.GetEvent(188);
+            var ev = bl.GetEventDetails(188);
         }
 
         [TestMethod]
@@ -197,8 +198,6 @@ namespace Wags.BusinessLayer.Test
         }
 
 #endregion
-
-        
-    
+         
     }
 }

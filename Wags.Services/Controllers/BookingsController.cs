@@ -15,8 +15,6 @@ namespace Wags.Services.Controllers
         {
             var bl = new BusinessLayer.BusinessLayer();
             var b = bl.GetBooking(id);
-            b.Event.Bookings = null;
-            b.Member.Bookings = null;
             return b;
         }
 
