@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Wags.DataModel;
 using Wags.Services.Model;
@@ -19,7 +17,7 @@ namespace Wags.Services.Controllers
             return bl.GetAllEvents(year);
         }
 
-        // GET: api/events/5/details
+        // GET: api/events/5
         [Route("{id:int}")]
         public Event GetEventDetails(int id)
         {
@@ -37,7 +35,7 @@ namespace Wags.Services.Controllers
             var res = new Report()
             {
                 Title = e.ToString(),
-                Headings = new string[] { "Position", "Player", "Points", "Strokes", "Handicap", "Status" },
+                Headings = new[] { "Position", "Player", "Points", "Strokes", "Handicap", "Status" },
                 Data = (e.Rounds.Count > 0) ?
                     e.Rounds
                         .First()

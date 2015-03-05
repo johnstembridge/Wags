@@ -38,25 +38,26 @@ namespace Wags.BusinessLayer
 
 #region Members
 
-        public IList<Member> GetAllMembers()
+        public IEnumerable<Member> GetAllMembers(bool current)
         {
-            return _memberRepository.GetAll();
+            return current? GetAllCurrentMembers() : _memberRepository.GetAll();
         }
 
-        public IList<Member> GetAllCurrentMembers()
+        public IEnumerable<Member> GetAllCurrentMembers()
         {
-            var nav = new Expression<Func<Member, object>>[]
+            var nav = new Expression<Func<Member, object>>[] 
             {
-                d => d.Histories
+                 d => d.Histories
             };
-            return _memberRepository.GetList(
+            var res = _memberRepository.GetList(
                  d => d.Histories.OrderByDescending(h => h.Date).FirstOrDefault().Status == PlayerStatus.Member,
                  nav);
+            return res;
         }
 
         public Member GetMemberById(int id)
         {
-            return GetMember(d => d.Id == id);
+            return _memberRepository.GetSingle(d => d.Id == id);
         }
 
         public Member GetMemberByName(string name)
@@ -65,7 +66,7 @@ namespace Wags.BusinessLayer
             var firstName = names[0];
             var lastName = names[1];
 
-            return GetMember(d => d.FirstName == firstName && d.LastName == lastName);
+            return _memberRepository.GetSingle(d => d.FirstName == firstName && d.LastName == lastName);
        }
 
         private Member GetMemberAll(Expression<Func<Member, bool>> where)
@@ -80,23 +81,13 @@ namespace Wags.BusinessLayer
             return _memberRepository.GetSingle(where, nav);
         }
 
-        private Member GetMemberSimple(Expression<Func<Member, bool>> where)
-        {
-            return _memberRepository.GetSingle(where);
-        }
-
-        private Member GetMember(Expression<Func<Member, bool>> where)
-        {
-            return _memberRepository.GetSingle(where);
-        }
-
-        public IList<History> GetMemberHistory(int id)
+        public IEnumerable<History> GetMemberHistory(int id)
         {
             var nav = new Expression<Func<Member, object>>[]
             {
                 d => d.Histories
             };
-            return _memberRepository.GetSingle(m => m.Id == id, nav).Histories.ToList();
+            return _memberRepository.GetSingle(m => m.Id == id, nav).Histories;
         }
 
         public History GetMemberCurrentStatus(int id)
@@ -226,7 +217,6 @@ namespace Wags.BusinessLayer
             var nav = new Expression<Func<Booking, object>>[]
             {
                 d => d.Member,
-                d => d.Event,
                 d => d.Guests
             };
             return _bookingRepository.GetSingle(d => d.Id == id, nav);
@@ -236,7 +226,6 @@ namespace Wags.BusinessLayer
         {
             var nav = new Expression<Func<Booking, object>>[]
             {
-                d => d.Event,
                 d => d.Member,
                 d => d.Guests
             };

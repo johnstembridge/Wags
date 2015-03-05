@@ -1,30 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Wags.DataModel;
 
 namespace Wags.Services.Controllers
 {
+    [RoutePrefix("api/bookings")]
     public class BookingsController : ApiController
     {
         // GET api/bookings/1
-        public Booking Get(int id)
+        [Route("{id:int}")]
+        public Booking GetBooking(int id)
         {
             var bl = new BusinessLayer.BusinessLayer();
             var b = bl.GetBooking(id);
             return b;
         }
 
-        // GET api/bookings/5/1
-        //public Booking Get(int eventId, int memberId)
-        //{
-        //    var bl = new BusinessLayer.BusinessLayer();
-        //    var b = bl.GetBooking(eventId, memberId);
-        //    return b;
-        //}
+        // GET api/bookings?eventId=e&memberId=m
+        [Route("")]
+        public Booking GetBookingForEventAndMember(int eventId = 0, int memberId = 0)
+        {
+            var bl = new BusinessLayer.BusinessLayer();
+            var b = bl.GetBookingForEventAndMember(eventId, memberId);
+            return b;
+        }
 
         // POST api/bookings
         public void Post([FromBody]string value)
