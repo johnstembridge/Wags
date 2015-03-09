@@ -57,8 +57,17 @@ namespace Wags.Services.Controllers
             return b;
         }
 
+        // GET: api/events/5/players
+        [Route("{id:int}/players")]
+        public IEnumerable<Player> GetPlayersForEvent(int id)
+        {
+            var bl = new BusinessLayer.BusinessLayer();
+            var b = bl.GetPlayersForEvent(id);
+            return b;
+        }
+
         // POST: api/events
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Event value)
         {
         }
 

@@ -5,17 +5,27 @@ namespace Wags.DataModel
 {
     public partial class Player:IEntity
     {
+        private History _currentStatus;
         public History CurrentStatus
         {
-            get { return Histories.OrderByDescending(h => h.Date).FirstOrDefault(); }
+            get { return _currentStatus ?? StatusAtDate(DateTime.Today); }
         }
 
         public History StatusAtDate(DateTime date)
         {
-            return Histories.OrderByDescending(h => h.Date).FirstOrDefault(h => h.Date <= date);
+            var current = Histories.OrderByDescending(h => h.Date).FirstOrDefault(h => h.Date <= date);
+            if (current != null)
+                current.Player = null;
+            return current;
         }
 
-        public override string ToString()
+        public void SetStatusAtDate(DateTime date)
+        {
+           var status = StatusAtDate(date);
+           _currentStatus = status;
+        }
+
+       public override string ToString()
         {
             return FullName;
         }

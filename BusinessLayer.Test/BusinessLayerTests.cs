@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Transactions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Wags.DataModel;
 
@@ -10,11 +10,19 @@ namespace Wags.BusinessLayer.Test
     public class BusinessLayerTests
     {
         private BusinessLayer bl;
+        private TransactionScope transaction;
 
         [TestInitialize]
         public void Init()
         {
-            bl = new BusinessLayer();           
+            bl = new BusinessLayer();
+            transaction = new System.Transactions.TransactionScope();
+        }
+
+        [TestCleanup]
+        public void Final()
+        {
+            transaction.Dispose();
         }
 
 #region Member
@@ -59,37 +67,47 @@ namespace Wags.BusinessLayer.Test
         }
 
         [TestMethod]
-        [Ignore]
         public void AddMember()
         {
-            var hist = new History()
+            var member = NewMember();
+            Assert.AreEqual(0, member.Id);
+            var newId = bl.AddMember(member);
+            Assert.AreNotEqual(0, newId);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void RemoveNonExistingMember()
+        {
+            bl.DeleteMember(0);
+        }
+
+        private static Member NewMember()
+        {
+            var hist = new History
             {
                 Date = DateTime.Today,
                 Status = PlayerStatus.Member,
                 Handicap = 28,
                 EntityState = EntityState.Added
-            };
-            var member = new Member()
+            }; 
+            
+            var member = new Member
             {
                 FirstName = "Joe",
                 LastName = "Blow",
                 Phone = "07948 213164",
                 Email = "joe.blow@gmail.com",
-                Address = new Address(){StreetAddress="1,The Road, The Town", PostCode="SW19 8XX"},
-                Histories = new List<History>(){hist}
+                Address = new Address() {StreetAddress = "1,The Road, The Town", PostCode = "SW19 8XX"},
+                Histories = new List<History>() {hist},
+                EntityState = EntityState.Added
             };
-            member.EntityState = EntityState.Added;
-            bl.AddMember(member);
-            var newId = member.Id;
-        }
-        [TestMethod]
-        [Ignore]
-        public void RemoveMember()
-        {
-            bl.DeleteMember(372);
+            return member;
         }
 
-#endregion
+
+
+        #endregion
 
 #region Player
 		
@@ -167,20 +185,24 @@ namespace Wags.BusinessLayer.Test
         [TestMethod]
         public void CreateBooking()
         {
-            var booking = new Booking()
-            {
-                MemberId = 12,
-                EventId = 188,
-                Attending = true,
-                Comment = "can't make morning round"
-            };
-            var res = bl.AddBooking(booking);
+            var newId = bl.AddBooking(NewBooking());
         }
 
         [TestMethod]
         public void UpdateBooking()
         {
-            var booking = bl.GetBookingForEventAndMember(188, 12);
+            var newId = bl.AddBooking(NewBooking());
+            var booking = bl.GetBooking(newId);
+            booking.Comment = "updated comment 1";
+            booking.EntityState=EntityState.Modified;
+            var res = bl.UpdateBooking(booking);
+        }
+
+        [TestMethod]
+        public void UpdateBookingWithNewGuest()
+        {
+            var newId = bl.AddBooking(NewBooking());
+            var booking = bl.GetBooking(newId);
             var guest = new Guest() 
             {
                 Name = "Joe Blow",
@@ -192,9 +214,24 @@ namespace Wags.BusinessLayer.Test
         }
 
         [TestMethod]
-        public void RemoveBooking()
+        [ExpectedException(typeof(ArgumentException))]
+        public void RemoveNonExistingBooking()
         {
-            bl.DeleteBooking(279);
+            bl.DeleteBooking(0);
+        }
+
+        static Booking NewBooking()
+        {
+            var booking = new Booking()
+            {
+                MemberId = 12,
+                EventId = 188,
+                Attending = true,
+                Comment = "can't make morning round",
+                EntityState = EntityState.Added
+
+            };
+            return booking;
         }
 
 #endregion

@@ -62,11 +62,10 @@ namespace Wags.BusinessLayer
 
         public Member GetMemberByName(string name)
         {
-            var names = name.Split(' ');
-            var firstName = names[0];
-            var lastName = names[1];
-
-            return _memberRepository.GetSingle(d => d.FirstName == firstName && d.LastName == lastName);
+            var names = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var firstName = names[0].ToLower();
+            var lastName = names[1].ToLower();
+            return _memberRepository.GetSingle(d => d.FirstName.ToLower() == firstName && d.LastName.ToLower() == lastName);
        }
 
         private Member GetMemberAll(Expression<Func<Member, bool>> where)
@@ -99,9 +98,10 @@ namespace Wags.BusinessLayer
             return _memberRepository.GetSingle(m => m.Id == id, nav).CurrentStatus;
         }
 
-        public void AddMember(Member member)
+        public int AddMember(Member member)
         {
             _memberRepository.Add(member);
+            return member.Id;
         }
 
         public void UpdateMember(Member member)
@@ -119,10 +119,17 @@ namespace Wags.BusinessLayer
                 d => d.Bookings
             };
             var member = _memberRepository.GetSingle(m => m.Id == id, nav);
+            if (member == null)
+                throw new ArgumentException(string.Format("Member {0} not found", id));
             member.EntityState = EntityState.Deleted;
             foreach (var hist in member.Histories)
                 hist.EntityState = EntityState.Deleted;
-            //etc.
+            foreach (var score in member.Scores)
+                score.EntityState = EntityState.Deleted;
+            foreach (var transaction in member.Transactions)
+                transaction.EntityState = EntityState.Deleted;
+            foreach (var booking in member.Bookings)
+                booking.EntityState = EntityState.Deleted;
             _memberRepository.Remove(member);
         }
 
@@ -132,6 +139,19 @@ namespace Wags.BusinessLayer
 		public IList<Player> GetAllPlayers()
         {
             return _playerRepository.GetAll();
+        }
+
+        public Player GetPlayerByName(string name)
+        {
+            var names = name.Split(new [] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var firstName = names[0].ToLower();
+            var lastName = names[1].ToLower();
+            var nav = new Expression<Func<Player, object>>[]
+            {
+                d => d.Scores,
+                d => d.Histories,
+            };
+            return _playerRepository.GetSingle(p => p.FirstName.ToLower() == firstName && p.LastName.ToLower() == lastName, nav);
         }
 
         public IList<History> GetPlayerHistory(int id)
@@ -147,6 +167,49 @@ namespace Wags.BusinessLayer
         public History GetPlayerStatusAtDate(int id, DateTime date)
         {
             return _playerRepository.GetSingle(p => p.Id == id, p => p.Histories).StatusAtDate(date);
+        }
+
+        public IList<Player> GetPlayersForEvent(int eventId)
+        {
+            var nav = new Expression<Func<Booking, object>>[]
+            {
+                d => d.Member,
+                d => d.Member.Histories,
+                d => d.Guests
+            };
+            var bookings = _bookingRepository.GetList(d => (d.Event.Id == eventId), nav);
+            var members = bookings.Select(b => b.Member.ToPlayer());
+            //var players = members.Select(m => m.ToPlayer());
+            var guests = bookings.Select(b => b.Guests.ToArray()).Aggregate((x, y) => x.Concat(y).ToArray()).Select(GuestToPlayer);
+            var players = members.Concat(guests).ToList();
+            var eventDate = GetEvent(eventId).Date;
+            foreach (Player p in players)
+            {
+                p.SetStatusAtDate(eventDate);
+                p.Histories = null;
+                p.Scores = null;
+            }
+            return players;
+        }
+
+        Player GuestToPlayer(Guest guest)
+        {
+            var player = GetPlayerByName(guest.Name);
+            var status = new History() {Status = PlayerStatus.Guest, Handicap=guest.Handicap, Date=guest.Booking.Timestamp};
+            if (player == null)
+            {
+                player = new Player()
+                {
+                    FirstName = guest.FirstName(),
+                    LastName = guest.LastName(),
+                    Histories = new List<History>{status}
+                };
+            }
+            else if (player.CurrentStatus.Handicap != status.Handicap)
+            {
+                player.Histories.Add(status);
+            }
+            return player;
         }
 
 #endregion
@@ -174,6 +237,12 @@ namespace Wags.BusinessLayer
             return _eventRepository.GetSingle(d => d.Id == id, nav);
         }
 
+        public Event GetEvent(int id)
+        {
+            var nav = new Expression<Func<Event, object>>[] {}; 
+            return _eventRepository.GetSingle(d => d.Id == id, nav);
+        }
+
         public Event GetEventBookings(int id)
         {
             var nav = new Expression<Func<Event, object>>[]
@@ -198,7 +267,21 @@ namespace Wags.BusinessLayer
             return _eventRepository.GetSingle(d => d.Id == id, nav);
         }
 
-#endregion
+        public int AddEvent(Event eventObj)
+        {
+            return 0;
+        }
+
+        public int UpdateEvent(Event eventObj)
+        {
+            return 0;
+        }
+
+        public void DeleteEvent(int id)
+        {
+        }
+
+        #endregion
 
 #region Bookings
 
@@ -253,6 +336,8 @@ namespace Wags.BusinessLayer
         public void DeleteBooking(int id)
         {
             var booking = GetBooking(id);
+            if (booking == null)
+                throw new ArgumentException(string.Format("Booking {0} not found", id));
             booking.EntityState = EntityState.Deleted;
             foreach (var guest in booking.Guests)
                 guest.EntityState = EntityState.Deleted;
@@ -270,7 +355,6 @@ namespace Wags.BusinessLayer
     //<History>
     //<Transaction>
     //<Score>
-    //<Member>
     //<Club> 
     //<Round>
 }
