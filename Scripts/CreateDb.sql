@@ -508,7 +508,7 @@ ADD CONSTRAINT [FK_EventOrganiser_Event]
     FOREIGN KEY ([Events_Id])
     REFERENCES [dbo].[Events]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Organisers_Id] in table 'EventOrganiser'
@@ -517,7 +517,7 @@ ADD CONSTRAINT [FK_EventOrganiser_Member]
     FOREIGN KEY ([Organisers_Id])
     REFERENCES [dbo].[Players_Member]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_EventOrganiser_Member'
 CREATE INDEX [IX_FK_EventOrganiser_Member]

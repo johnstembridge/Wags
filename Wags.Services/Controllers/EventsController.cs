@@ -67,18 +67,33 @@ namespace Wags.Services.Controllers
         }
 
         // POST: api/events
-        public void Post([FromBody]Event value)
+        [Route]
+        public IHttpActionResult PostEvent([FromBody]Event value)
         {
+            var bl = new BusinessLayer.BusinessLayer();
+            var newEvent = bl.AddEvent(value);
+            if (newEvent != null)
+            {
+                return Created(Request.RequestUri + newEvent.Id.ToString(), newEvent);
+            }
+            else
+            {
+                return Conflict();
+            }
         }
 
         // PUT: api/events/5
-        public void Put(int id, [FromBody]string value)
+        [Route("{id:int}")]
+        public void PutEvent(int id, [FromBody]Event value)
         {
         }
 
         // DELETE: api/events/5
-        public void Delete(int id)
+        [Route("{id:int}")]
+        public void DeleteEvent(int id)
         {
+            var bl = new BusinessLayer.BusinessLayer();
+            bl.DeleteEvent(id);
         }
 
         private object[] FormatScore(Score score, DateTime date)

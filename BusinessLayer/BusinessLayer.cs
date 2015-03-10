@@ -233,6 +233,20 @@ namespace Wags.BusinessLayer
             {
                 d => d.Trophy,
                 d => d.Organisers,
+                d => d.Rounds,
+                d => d.Rounds.Select(c => c.Course.Club)
+            };  
+            return _eventRepository.GetSingle(d => d.Id == id, nav);
+        }
+
+        public Event GetEventAll(int id)
+        {
+            var nav = new Expression<Func<Event, object>>[]
+            {
+                d => d.Trophy,
+                d => d.Organisers,
+                d => d.Rounds,
+                d => d.Bookings
             };  
             return _eventRepository.GetSingle(d => d.Id == id, nav);
         }
@@ -267,10 +281,14 @@ namespace Wags.BusinessLayer
             return _eventRepository.GetSingle(d => d.Id == id, nav);
         }
 
-        public int AddEvent(Event eventObj)
+        public Event AddEvent(Event newEvent)
         {
-            return 0;
-        }
+            newEvent.EntityState = EntityState.Added;
+            foreach (var round in newEvent.Rounds)
+                round.EntityState = EntityState.Added;
+            _eventRepository.Add(newEvent);
+            return newEvent;
+      }
 
         public int UpdateEvent(Event eventObj)
         {
@@ -279,6 +297,15 @@ namespace Wags.BusinessLayer
 
         public void DeleteEvent(int id)
         {
+            var ev = GetEventAll(id);
+            if (ev == null)
+                throw new ArgumentException(string.Format("Event {0} not found", id));
+            ev.EntityState = EntityState.Deleted;
+            foreach (var round in ev.Rounds)
+                round.EntityState = EntityState.Deleted;
+            foreach (var booking in ev.Bookings)
+                booking.EntityState = EntityState.Deleted;
+            _eventRepository.Remove(ev);
         }
 
         #endregion
