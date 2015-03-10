@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="200e077190d24e8e9cfed96998f1d8c7" Name="Diagram1" ZoomLevel="79" >
+      <Diagram DiagramId="200e077190d24e8e9cfed96998f1d8c7" Name="Diagram1" ZoomLevel="100" >
         <EntityTypeShape EntityType="Wags.Model.Player" Width="1.625" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="Wags.Model.Course" Width="1.5" PointX="11.25" PointY="0.5" />
         <EntityTypeShape EntityType="Wags.Model.CourseData" Width="1.5" PointX="13.125" PointY="0.5" />
@@ -16,7 +16,11 @@
         <EntityTypeShape EntityType="Wags.Model.Transaction" Width="1.625" PointX="2.875" PointY="4" />
         <EntityTypeShape EntityType="Wags.Model.Score" Width="1.5" PointX="7.5" PointY="0.5" />
         <AssociationConnector Association="Wags.Model.PlayerScore" />
-        <AssociationConnector Association="Wags.Model.EventBooking" ManuallyRouted="false" >
+        <AssociationConnector Association="Wags.Model.EventBooking" ManuallyRouted="true" >
+          <ConnectorPoint PointX="9.375" PointY="6.2749005962171047" />
+          <ConnectorPoint PointX="7.125" PointY="6.2749005962171047" />
+          <ConnectorPoint PointX="7.125" PointY="3.1796240234375" />
+          <ConnectorPoint PointX="6.75" PointY="3.1796240234375" />
         </AssociationConnector>
         <AssociationConnector Association="Wags.Model.PlayerHistory" />
         <EntityTypeShape EntityType="Wags.Model.Member" Width="1.625" PointX="2.875" PointY="1.125" />
@@ -31,13 +35,10 @@
         <AssociationConnector Association="Wags.Model.EventTrophy" />
         <InheritanceConnector EntityType="Wags.Model.Member" />
         <AssociationConnector Association="Wags.Model.EventOrganiser" ManuallyRouted="true" >
-          <ConnectorPoint PointX="9.375" PointY="7.0443729032333877" />
-          <ConnectorPoint PointX="7" PointY="7.0443729032333877" />
-          <ConnectorPoint PointX="7" PointY="7.0419304923471788" />
-          <ConnectorPoint PointX="4.75" PointY="7.0419304923471788" />
-          <ConnectorPoint PointX="4.75" PointY="3.75" />
-          <ConnectorPoint PointX="4.0000025" PointY="3.75" />
-          <ConnectorPoint PointX="4.0000025" PointY="3.297587890625" />
+          <ConnectorPoint PointX="9.375" PointY="6.8068512490354927" />
+          <ConnectorPoint PointX="4.875" PointY="6.8068512490354927" />
+          <ConnectorPoint PointX="4.875" PointY="2.9533364722842261" />
+          <ConnectorPoint PointX="4.5" PointY="2.9533364722842261" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Wags.Model.Guest" Width="1.5" PointX="5.25" PointY="4.375" />
         <AssociationConnector Association="Wags.Model.BookingGuest" />

@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/31/2014 17:10:48
--- Generated from EDMX file: D:\Wags\DataAccess\Model.edmx
+-- Date Created: 03/10/2015 14:38:11
+-- Generated from EDMX file: C:\Users\jstembridge\code\Wags\DataAccess\Model.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -355,6 +355,7 @@ ADD CONSTRAINT [FK_CourseCourseData]
     REFERENCES [dbo].[Courses]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CourseCourseData'
 CREATE INDEX [IX_FK_CourseCourseData]
@@ -369,6 +370,7 @@ ADD CONSTRAINT [FK_PlayerScore]
     REFERENCES [dbo].[Players]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PlayerScore'
 CREATE INDEX [IX_FK_PlayerScore]
@@ -383,6 +385,7 @@ ADD CONSTRAINT [FK_EventBooking]
     REFERENCES [dbo].[Events]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_EventBooking'
 CREATE INDEX [IX_FK_EventBooking]
@@ -397,6 +400,7 @@ ADD CONSTRAINT [FK_PlayerHistory]
     REFERENCES [dbo].[Players]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PlayerHistory'
 CREATE INDEX [IX_FK_PlayerHistory]
@@ -411,6 +415,7 @@ ADD CONSTRAINT [FK_MemberTransaction]
     REFERENCES [dbo].[Players_Member]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_MemberTransaction'
 CREATE INDEX [IX_FK_MemberTransaction]
@@ -425,6 +430,7 @@ ADD CONSTRAINT [FK_MemberBooking]
     REFERENCES [dbo].[Players_Member]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_MemberBooking'
 CREATE INDEX [IX_FK_MemberBooking]
@@ -439,6 +445,7 @@ ADD CONSTRAINT [FK_ClubCourse]
     REFERENCES [dbo].[Clubs]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ClubCourse'
 CREATE INDEX [IX_FK_ClubCourse]
@@ -453,6 +460,7 @@ ADD CONSTRAINT [FK_EventRound]
     REFERENCES [dbo].[Events]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_EventRound'
 CREATE INDEX [IX_FK_EventRound]
@@ -467,6 +475,7 @@ ADD CONSTRAINT [FK_RoundScore]
     REFERENCES [dbo].[Rounds]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RoundScore'
 CREATE INDEX [IX_FK_RoundScore]
@@ -481,6 +490,7 @@ ADD CONSTRAINT [FK_CourseRound]
     REFERENCES [dbo].[Courses]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CourseRound'
 CREATE INDEX [IX_FK_CourseRound]
@@ -495,6 +505,7 @@ ADD CONSTRAINT [FK_EventTrophy]
     REFERENCES [dbo].[Trophies]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_EventTrophy'
 CREATE INDEX [IX_FK_EventTrophy]
@@ -518,6 +529,7 @@ ADD CONSTRAINT [FK_EventOrganiser_Member]
     REFERENCES [dbo].[Players_Member]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_EventOrganiser_Member'
 CREATE INDEX [IX_FK_EventOrganiser_Member]
@@ -532,6 +544,7 @@ ADD CONSTRAINT [FK_BookingGuest]
     REFERENCES [dbo].[Bookings]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_BookingGuest'
 CREATE INDEX [IX_FK_BookingGuest]

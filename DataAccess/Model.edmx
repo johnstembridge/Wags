@@ -754,8 +754,10 @@
           <End Type="Wags.Model.Trophy" Role="Trophy" Multiplicity="0..1" />
         </Association>
         <Association Name="EventOrganiser">
-          <End Type="Wags.Model.Event" Role="Event" Multiplicity="*" />
-          <End Type="Wags.Model.Member" Role="Member" Multiplicity="*" />
+          <End Type="Wags.Model.Event" Role="Event" Multiplicity="*" >
+          </End>
+          <End Type="Wags.Model.Member" Role="Member" Multiplicity="*" >
+          </End>
         </Association>
         <EntityType Name="Guest">
           <Key>

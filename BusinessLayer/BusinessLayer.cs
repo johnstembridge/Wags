@@ -301,10 +301,11 @@ namespace Wags.BusinessLayer
             if (ev == null)
                 throw new ArgumentException(string.Format("Event {0} not found", id));
             ev.EntityState = EntityState.Deleted;
-            foreach (var round in ev.Rounds)
-                round.EntityState = EntityState.Deleted;
             foreach (var booking in ev.Bookings)
                 booking.EntityState = EntityState.Deleted;
+            foreach (var round in ev.Rounds)
+                round.EntityState = EntityState.Deleted;
+
             _eventRepository.Remove(ev);
         }
 
