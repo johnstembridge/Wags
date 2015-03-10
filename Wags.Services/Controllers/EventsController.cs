@@ -74,7 +74,7 @@ namespace Wags.Services.Controllers
             var newEvent = bl.AddEvent(value);
             if (newEvent != null)
             {
-                return Created(Request.RequestUri + newEvent.Id.ToString(), newEvent);
+                return Created(Request.RequestUri + "/" + newEvent.Id, newEvent);
             }
             else
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Transactions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Wags.DataModel;
@@ -160,6 +161,33 @@ namespace Wags.BusinessLayer.Test
             var res = bl.GetEventResult(186);
         }
 
+        [TestMethod]
+        public void CreateEvent()
+        {
+            var res = bl.AddEvent(NewEvent());
+        }
+
+        Event NewEvent()
+        {
+            var round = new Round {CourseId = 87, Date = new DateTime(2015, 3, 30)};
+            var organiser = new Member {Id = 178};
+            var ev = new Event()
+            {
+                Date = new DateTime(2015, 3, 30),
+                Name = "West Byfleet",
+                MemberPrice = 45.00M,
+                GuestPrice = 55.00M,
+                BookingDeadline = new DateTime(2015, 3, 26),
+                MaxPlayers = 40,
+                Schedule = "08.30 Full English Breakfast,09.30 Tee off 9 holes, 12.00 Ploughmans lunch, 13.00 Tee off 18 holes, 18.00 Prizes and drinks",
+                Notes = "No guests for time being",
+                Rounds = new [] {round},
+                Trophy = new Trophy {Id = 1},
+                Organisers = new []{organiser}
+            };
+            return ev;            
+        }
+
         #endregion
 
 #region Booking
@@ -227,9 +255,7 @@ namespace Wags.BusinessLayer.Test
                 MemberId = 12,
                 EventId = 188,
                 Attending = true,
-                Comment = "can't make morning round",
-                EntityState = EntityState.Added
-
+                Comment = "can't make morning round"
             };
             return booking;
         }
