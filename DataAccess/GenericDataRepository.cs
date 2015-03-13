@@ -9,7 +9,7 @@ using Wags.DataModel;
 namespace Wags.DataAccess
 {
     /// <summary>
-    /// A generic data access layer (DAL) with full CRUD (Create, Read, Update and Delete) support using Entity Framework 5 with plain old CLR objects (POCOs)
+    /// A generic data access layer (DAL) with full CRUD (Create, Read, Update and Delete) support using Entity Framework 5/6 with plain old CLR objects (POCOs)
     /// and short-lived contexts in a disconnected and stateless N-tier application.
     /// based on ideas in http://blog.magnusmontin.net/2013/05/30/generic-dal-using-entity-framework/
     /// </summary>

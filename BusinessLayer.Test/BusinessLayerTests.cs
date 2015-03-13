@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Transactions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Wags.DataModel;
@@ -10,14 +9,14 @@ namespace Wags.BusinessLayer.Test
     [TestClass]
     public class BusinessLayerTests
     {
-        private BusinessLayer bl;
+        private IBusinessLayer bl;
         private TransactionScope transaction;
 
         [TestInitialize]
         public void Init()
         {
             bl = new BusinessLayer();
-            transaction = new System.Transactions.TransactionScope();
+            transaction = new TransactionScope();
         }
 
         [TestCleanup]
@@ -30,13 +29,13 @@ namespace Wags.BusinessLayer.Test
         [TestMethod]
         public void GetCurrentMembers()
         {
-            var members = bl.GetAllCurrentMembers();
+            var members = bl.GetAllMembers();
         }
 
         [TestMethod]
         public void GetMember()
         {
-            var member = bl.GetMemberById(12);
+            var member = bl.GetMember(12);
         }
 
         [TestMethod]
@@ -61,7 +60,7 @@ namespace Wags.BusinessLayer.Test
         [TestMethod]
         public void UpdateMember()
         {
-            var member = bl.GetMemberById(12);
+            var member = bl.GetMember(12);
             member.Phone = "07948 213164";
             member.EntityState = EntityState.Modified;
             bl.UpdateMember(member);
@@ -133,6 +132,11 @@ namespace Wags.BusinessLayer.Test
             Assert.AreEqual(27, current.Handicap);
         }
 
+        [TestMethod]
+        public void GetPlayersForEvent()
+        {
+            var players = bl.GetPlayersForEvent(186);
+        }
 #endregion 
  
 #region Event
@@ -155,11 +159,11 @@ namespace Wags.BusinessLayer.Test
             var ev = bl.GetEventDetails(188);
         }
 
-        [TestMethod]
-        public void GetEventResult()
-        {
-            var res = bl.GetEventResult(186);
-        }
+        //[TestMethod]
+        //public Report GetEventResult()
+        //{
+        //    var res = bl.GetEventResult(186);
+        //}
 
         [TestMethod]
         public void CreateEvent()
@@ -195,7 +199,7 @@ namespace Wags.BusinessLayer.Test
         [TestMethod]
         public void GetBookingsForEvent()
         {
-            var res = bl.GetBookingsForEvent(186);
+            var res = bl.GetEventBookings(186);
         }
  
         [TestMethod]
@@ -223,7 +227,7 @@ namespace Wags.BusinessLayer.Test
             var booking = bl.GetBooking(newId);
             booking.Comment = "updated comment 1";
             booking.EntityState=EntityState.Modified;
-            var res = bl.UpdateBooking(booking);
+            bl.UpdateBooking(booking);
         }
 
         [TestMethod]
@@ -238,7 +242,7 @@ namespace Wags.BusinessLayer.Test
                 EntityState=EntityState.Added
             };
             booking.Guests.Add(guest);
-            var res = bl.UpdateBooking(booking);
+            bl.UpdateBooking(booking);
         }
 
         [TestMethod]

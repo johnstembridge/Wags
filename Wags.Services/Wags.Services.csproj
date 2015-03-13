@@ -108,13 +108,29 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\BookingsController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\BookingModel.cs" />
+    <Compile Include="Models\ClubModel.cs" />
+    <Compile Include="Models\CourseDataModel.cs" />
+    <Compile Include="Models\CourseModel.cs" />
+    <Compile Include="Models\EventModel.cs" />
+    <Compile Include="Models\GuestModel.cs" />
+    <Compile Include="Models\IEntity.cs" />
+    <Compile Include="Models\MemberModel.cs" />
+    <Compile Include="Models\ModelFactory.cs" />
+    <Compile Include="Models\PlayerModel.cs" />
+    <Compile Include="Models\PlayerStatus.cs" />
     <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\RoundModel.cs" />
+    <Compile Include="Models\StatusModel.cs" />
+    <Compile Include="Models\TrophyModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

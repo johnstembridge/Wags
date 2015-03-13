@@ -72,6 +72,10 @@
       <Project>{a8c5ae1c-3e36-41d3-8403-d793bb48f186}</Project>
       <Name>Wags.DataModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Wags.Services\Wags.Services.csproj">
+      <Project>{A2DDD49A-6262-4948-A996-31D11D69CD5F}</Project>
+      <Name>Wags.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

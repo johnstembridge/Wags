@@ -38,12 +38,12 @@ namespace Wags.BusinessLayer
 
 #region Members
 
-        public IEnumerable<Member> GetAllMembers(bool current)
+        public IList<Member> GetAllMembers(bool current=true)
         {
             return current? GetAllCurrentMembers() : _memberRepository.GetAll();
         }
 
-        public IEnumerable<Member> GetAllCurrentMembers()
+        IList<Member> GetAllCurrentMembers()
         {
             var nav = new Expression<Func<Member, object>>[] 
             {
@@ -55,7 +55,7 @@ namespace Wags.BusinessLayer
             return res;
         }
 
-        public Member GetMemberById(int id)
+        public Member GetMember(int id)
         {
             return _memberRepository.GetSingle(d => d.Id == id);
         }
@@ -68,7 +68,7 @@ namespace Wags.BusinessLayer
             return _memberRepository.GetSingle(d => d.FirstName.ToLower() == firstName && d.LastName.ToLower() == lastName);
        }
 
-        private Member GetMemberAll(Expression<Func<Member, bool>> where)
+        public Member GetMemberAllInfo(int id)
         {
             var nav = new Expression<Func<Member, object>>[]
             {
@@ -77,16 +77,16 @@ namespace Wags.BusinessLayer
                 d => d.Transactions,
                 d => d.Bookings
             };
-            return _memberRepository.GetSingle(where, nav);
+            return _memberRepository.GetSingle(d => d.Id == id, nav);
         }
 
-        public IEnumerable<History> GetMemberHistory(int id)
+        public IList<History> GetMemberHistory(int id)
         {
             var nav = new Expression<Func<Member, object>>[]
             {
                 d => d.Histories
             };
-            return _memberRepository.GetSingle(m => m.Id == id, nav).Histories;
+            return _memberRepository.GetSingle(m => m.Id == id, nav).Histories.ToList();
         }
 
         public History GetMemberCurrentStatus(int id)
@@ -179,7 +179,6 @@ namespace Wags.BusinessLayer
             };
             var bookings = _bookingRepository.GetList(d => (d.Event.Id == eventId), nav);
             var members = bookings.Select(b => b.Member.ToPlayer());
-            //var players = members.Select(m => m.ToPlayer());
             var guests = bookings.Select(b => b.Guests.ToArray()).Aggregate((x, y) => x.Concat(y).ToArray()).Select(GuestToPlayer);
             var players = members.Concat(guests).ToList();
             var eventDate = GetEvent(eventId).Date;
@@ -216,15 +215,15 @@ namespace Wags.BusinessLayer
  
 #region Events
 
-        public IEnumerable<Event> GetAllEvents()
+        public IList<Event> GetAllEvents()
         {
-            return _eventRepository.GetAll(d => d.Trophy).OrderBy(d => d.Date);
+            return _eventRepository.GetAll(d => d.Trophy).OrderBy(d => d.Date).ToList();
         }
 
-        public IEnumerable<Event> GetAllEvents(int year)
+        public IList<Event> GetAllEvents(int year)
         {
             if (year == 0) return GetAllEvents();
-            return _eventRepository.GetList(d => d.Date.Year == year, d => d.Trophy).OrderBy(d => d.Date);
+            return _eventRepository.GetList(d => d.Date.Year == year, d => d.Trophy).OrderBy(d => d.Date).ToList();
         }
 
         public Event GetEventDetails(int id)
@@ -257,17 +256,6 @@ namespace Wags.BusinessLayer
             return _eventRepository.GetSingle(d => d.Id == id, nav);
         }
 
-        public Event GetEventBookings(int id)
-        {
-            var nav = new Expression<Func<Event, object>>[]
-            {
-                d => d.Bookings,
-                d => d.Bookings.Select(b => b.Member),
-                d => d.Bookings.Select(b => b.Guests)
-            };  
-            return _eventRepository.GetSingle(d => d.Id == id, nav);
-        }
-
 		public Event GetEventResult(int id)
         {
             var nav = new Expression<Func<Event, object>>[]
@@ -290,9 +278,9 @@ namespace Wags.BusinessLayer
             return newEvent;
       }
 
-        public int UpdateEvent(Event eventObj)
+        public Event UpdateEvent(Event eventObj)
         {
-            return 0;
+            return eventObj;
         }
 
         public void DeleteEvent(int id)
@@ -313,7 +301,7 @@ namespace Wags.BusinessLayer
 
 #region Bookings
 
-        public IList<Booking> GetBookingsForEvent(int eventId)
+        public IList<Booking> GetEventBookings(int eventId)
         {
             var nav = new Expression<Func<Booking, object>>[]
             {
@@ -353,12 +341,11 @@ namespace Wags.BusinessLayer
             return booking.Id;
         }
 
-        public int UpdateBooking(Booking booking)
+        public void UpdateBooking(Booking booking)
         {
             booking.Timestamp = DateTime.Now;
             booking.EntityState = EntityState.Modified;
             _bookingRepository.Update(booking);
-            return booking.Id;
         }
 
         public void DeleteBooking(int id)

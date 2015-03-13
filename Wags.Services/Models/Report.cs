@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Wags.Services.Model
+namespace Wags.Services.Models
 {
     public class Report
     {

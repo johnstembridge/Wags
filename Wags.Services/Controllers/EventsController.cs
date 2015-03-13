@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web.Http;
 using Wags.DataModel;
-using Wags.Services.Model;
+using Wags.Services.Models;
 
 namespace Wags.Services.Controllers
 {
     [RoutePrefix("api/events")]
-    public class EventsController : ApiController
+    public class EventsController : BaseApiController
     {
         //GET: api/events?year=yr
-        public IEnumerable<Event> GetEventsForYear(int year = 0)
+        public IList<EventModel> GetEventsForYear(int year = 0)
         {
-            var bl = new BusinessLayer.BusinessLayer();
-            return bl.GetAllEvents(year);
+            return BusinessLayer.GetAllEvents(year).Select(ModelFactory.Create).ToList();
         }
 
         // GET: api/events/5
         [Route("{id:int}")]
-        public Event GetEventDetails(int id)
+        public EventModel GetEventDetails(int id)
         {
-            var bl = new BusinessLayer.BusinessLayer();
-            var e = bl.GetEventDetails(id);
-            return e;
+            return ModelFactory.Create(BusinessLayer.GetEventDetails(id));
         }
 
         // GET: api/events/5/result
@@ -50,31 +48,26 @@ namespace Wags.Services.Controllers
 
         // GET: api/events/5/bookings
         [Route("{id:int}/bookings")]
-        public IEnumerable<Booking> GetBookingsForEvent(int id)
+        public IEnumerable<BookingModel> GetEventBookings(int id)
         {
-            var bl = new BusinessLayer.BusinessLayer();
-            var b = bl.GetBookingsForEvent(id);
-            return b;
+            return BusinessLayer.GetEventBookings(id).Select(ModelFactory.Create);
         }
 
         // GET: api/events/5/players
         [Route("{id:int}/players")]
-        public IEnumerable<Player> GetPlayersForEvent(int id)
+        public IEnumerable<PlayerModel> GetPlayersForEvent(int id)
         {
-            var bl = new BusinessLayer.BusinessLayer();
-            var b = bl.GetPlayersForEvent(id);
-            return b;
+            return BusinessLayer.GetPlayersForEvent(id).Select(ModelFactory.Create);
         }
 
         // POST: api/events
         [Route]
-        public IHttpActionResult PostEvent([FromBody]Event value)
+        public IHttpActionResult PostEvent([FromBody]EventModel value)
         {
-            var bl = new BusinessLayer.BusinessLayer();
-            var newEvent = bl.AddEvent(value);
+            var newEvent = BusinessLayer.AddEvent(ModelFactory.Parse(value));
             if (newEvent != null)
             {
-                return Created(Request.RequestUri + "/" + newEvent.Id, newEvent);
+                return Created(Request.RequestUri + "/" + newEvent.Id, GetEventDetails(newEvent.Id));
             }
             else
             {
@@ -92,8 +85,7 @@ namespace Wags.Services.Controllers
         [Route("{id:int}")]
         public void DeleteEvent(int id)
         {
-            var bl = new BusinessLayer.BusinessLayer();
-            bl.DeleteEvent(id);
+            BusinessLayer.DeleteEvent(id);
         }
 
         private object[] FormatScore(Score score, DateTime date)

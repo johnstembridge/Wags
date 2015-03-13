@@ -5,7 +5,7 @@ using Wags.DataModel;
 namespace Wags.Services.Controllers
 {
     [RoutePrefix("api/members")]
-    public class MembersController : ApiController
+    public class MembersController : BaseApiController
     {
         // GET: api/members[?current=true|false]
         public IEnumerable<Member> GetAllMembers(bool current=true)
@@ -26,7 +26,7 @@ namespace Wags.Services.Controllers
         public Member GetMember(int id)
         {
             var bl = new BusinessLayer.BusinessLayer();
-            var m = bl.GetMemberById(id);
+            var m = bl.GetMember(id);
             return m;
         }
 
@@ -35,7 +35,7 @@ namespace Wags.Services.Controllers
         public Member GetMemberHistory(int id)
         {
             var bl = new BusinessLayer.BusinessLayer();
-            var m = bl.GetMemberById(id);
+            var m = bl.GetMember(id);
             return m;
         }
 
