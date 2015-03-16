@@ -171,6 +171,14 @@ namespace Wags.BusinessLayer.Test
             var res = bl.AddEvent(NewEvent());
         }
 
+        [TestMethod]
+        public void UpdateEvent()
+        {
+            var res = bl.AddEvent(NewEvent());
+            res.MemberPrice = 46.00M;
+            bl.UpdateEvent(res);
+        }
+
         Event NewEvent()
         {
             var round = new Round {CourseId = 87, Date = new DateTime(2015, 3, 30)};

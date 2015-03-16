@@ -171,6 +171,8 @@ namespace Wags.BusinessLayer
 
         public IList<Player> GetPlayersForEvent(int eventId)
         {
+            if (!EventExists(eventId))
+                return null;
             var nav = new Expression<Func<Booking, object>>[]
             {
                 d => d.Member,
@@ -226,6 +228,11 @@ namespace Wags.BusinessLayer
             return _eventRepository.GetList(d => d.Date.Year == year, d => d.Trophy).OrderBy(d => d.Date).ToList();
         }
 
+        public bool EventExists(int id)
+        {
+            return null != GetEvent(id);
+        }
+
         public Event GetEventDetails(int id)
         {
             var nav = new Expression<Func<Event, object>>[]
@@ -257,7 +264,9 @@ namespace Wags.BusinessLayer
         }
 
 		public Event GetEventResult(int id)
-        {
+		{
+		    if (!EventExists(id))
+		        return null;
             var nav = new Expression<Func<Event, object>>[]
             {
                 d => d.Rounds,
@@ -274,13 +283,23 @@ namespace Wags.BusinessLayer
             newEvent.EntityState = EntityState.Added;
             foreach (var round in newEvent.Rounds)
                 round.EntityState = EntityState.Added;
-            _eventRepository.Add(newEvent);
+            try
+            {
+                _eventRepository.Add(newEvent);
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException.ToString().Contains("duplicate"))
+                    newEvent = null;
+                else
+                    throw;
+            }
             return newEvent;
       }
 
-        public Event UpdateEvent(Event eventObj)
+        public void UpdateEvent(Event eventObj)
         {
-            return eventObj;
+            _eventRepository.Update(eventObj);
         }
 
         public void DeleteEvent(int id)
@@ -303,6 +322,8 @@ namespace Wags.BusinessLayer
 
         public IList<Booking> GetEventBookings(int eventId)
         {
+            if (!EventExists(eventId))
+                return null; 
             var nav = new Expression<Func<Booking, object>>[]
             {
                 d => d.Member,

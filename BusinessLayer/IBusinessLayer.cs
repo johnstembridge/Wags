@@ -10,7 +10,7 @@ namespace Wags.BusinessLayer
         IList<Event> GetAllEvents(int year);
         Event GetEventDetails(int id);
         Event AddEvent(Event newEvent);
-        Event UpdateEvent(Event newEvent);
+        void UpdateEvent(Event newEvent);
         void DeleteEvent(int id);
 
         IList<Booking> GetEventBookings(int eventId);
