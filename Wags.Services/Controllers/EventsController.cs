@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Runtime.Remoting.Messaging;
 using System.Web.Http;
 using Wags.DataModel;
 using Wags.Services.Models;
@@ -14,83 +12,84 @@ namespace Wags.Services.Controllers
     public class EventsController : BaseApiController
     {
         //GET: api/events?year=yr
-        public IList<EventModel> GetEventsForYear(int year = 0)
+        [Route]
+        public IEnumerable<EventModel> GetEventsForYear(int year = 0)
         {
-            return BusinessLayer.GetAllEvents(year).Select(ModelFactory.Create).ToList();
+            return BusinessLayer.GetAllEvents(year).Select(ModelFactory.Create);
         }
 
         // GET: api/events/5
         [Route("{id:int}")]
-        public HttpResponseMessage GetEventDetails(int id)
+        public IHttpActionResult GetEventDetails(int id)
         {
             try
             {
                 var eventObj = BusinessLayer.GetEventDetails(id);
                 if (eventObj != null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, ModelFactory.Create(eventObj));
+                    return Ok(ModelFactory.Create(eventObj));
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return NotFound();
                 }
 
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return BadRequest(ex.ToString());
             }
         }
 
         // GET: api/events/5/bookings
         [Route("{id:int}/bookings")]
-        public HttpResponseMessage GetEventBookings(int id)
+        public IHttpActionResult GetEventBookings(int id)
         {
             try
             {
                 var bookings = BusinessLayer.GetEventBookings(id);
                 if (bookings != null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, bookings.Select(ModelFactory.Create));
+                    return Ok(bookings.Select(ModelFactory.Create));
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return NotFound();
                 }
 
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return BadRequest(ex.ToString());
             }
         }
 
         // GET: api/events/5/players
         [Route("{id:int}/players")]
-        public HttpResponseMessage GetPlayersForEvent(int id)
+        public IHttpActionResult GetPlayersForEvent(int id)
         {
             try
             {
                 var players = BusinessLayer.GetPlayersForEvent(id);
                 if (players != null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, players.Select(ModelFactory.Create));
+                    return Ok(players.Select(ModelFactory.Create));
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return NotFound();
                 }
 
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return BadRequest(ex.ToString());
             }
         }            
 
-        // GET: api/events/5/result
-        [Route("{id:int}/result")]
-        public HttpResponseMessage GetEventResult(int id)
+        // GET: api/events/5/results
+        [Route("{id:int}/results")]
+        public IHttpActionResult GetEventResult(int id)
         {
             try
             {
@@ -110,90 +109,90 @@ namespace Wags.Services.Controllers
                             :
                             new List<object[]>()
                     };
-                    return Request.CreateResponse(HttpStatusCode.OK, res);
+                    return Ok(res);
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return NotFound();
                 }
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return BadRequest(ex.ToString());
             }
         }
 
         // POST: api/events
         [Route]
-        public HttpResponseMessage PostEvent([FromBody]EventModel value)
+        public IHttpActionResult PostEvent([FromBody]EventModel value)
         {
             try
             {
                 var newEvent = ModelFactory.Parse(value);
                 if (newEvent == null)
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                        "Could not read event details from body");
+                    return BadRequest("Could not read event details from body");
                 var res = BusinessLayer.AddEvent(newEvent);
                 if (res != null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.Created, ModelFactory.Create(BusinessLayer.GetEventDetails(res.Id)));
+                    var response = ModelFactory.Create(BusinessLayer.GetEventDetails(res.Id));
+                    return CreatedAtRoute("DefaultApi", new {controller="events", id=res.Id}, response);
                 }
                 else
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Conflict, "Duplicate event");
+                    return Conflict();
                 }
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return BadRequest(ex.ToString());
             }
         }
 
         // PUT: api/events/5
         [Route("{id:int}")]
-        public HttpResponseMessage PutEvent(int id, [FromBody]EventModel value)
+        public IHttpActionResult PutEvent(int id, [FromBody]EventModel value)
         {
             try
             {
                 var updatedEvent = ModelFactory.Parse(value);
                 if (updatedEvent == null)
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Could not read event details from body");
+                    return BadRequest("Could not read event details from body");
 
                 if (BusinessLayer.EventExists(id))
                 {
                     BusinessLayer.UpdateEvent(updatedEvent);
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    return Ok();
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotModified, "Event not found");
+                    return StatusCode(HttpStatusCode.NotModified);
                 }
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return BadRequest(ex.ToString());
             }
         }
 
         // DELETE: api/events/5
         [Route("{id:int}")]
-        public HttpResponseMessage DeleteEvent(int id)
+        public IHttpActionResult DeleteEvent(int id)
         {
             try
             {
                 if (BusinessLayer.EventExists(id))
                 {
                     BusinessLayer.DeleteEvent(id);
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    return Ok();
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return NotFound();
                 }
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return BadRequest(ex.ToString());
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using Wags.DataAccess;
@@ -181,7 +182,9 @@ namespace Wags.BusinessLayer
             };
             var bookings = _bookingRepository.GetList(d => (d.Event.Id == eventId), nav);
             var members = bookings.Select(b => b.Member.ToPlayer());
-            var guests = bookings.Select(b => b.Guests.ToArray()).Aggregate((x, y) => x.Concat(y).ToArray()).Select(GuestToPlayer);
+            var guests = (bookings.Count > 0) 
+                ?bookings.Select(b => b.Guests.ToArray()).Aggregate((x, y) => x.Concat(y).ToArray()).Select(GuestToPlayer)
+                :new List< Player>();
             var players = members.Concat(guests).ToList();
             var eventDate = GetEvent(eventId).Date;
             foreach (Player p in players)

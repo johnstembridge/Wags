@@ -21,7 +21,7 @@ namespace Wags.Services.Models
                 Notes = eventData.Notes,
                 Url = eventData.Url,
                 Rounds = eventData.Rounds.Select(Create).ToList(),
-                Trophy = Create(eventData.Trophy),
+                Trophy = (eventData.Trophy != null) ? Create(eventData.Trophy) : null,
                 Organisers = eventData.Organisers.Select(Create).ToList(),
                 EntityState = (EntityState) eventData.EntityState
             };
