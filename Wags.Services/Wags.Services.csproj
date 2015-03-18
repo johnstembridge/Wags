@@ -116,6 +116,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Models\ClubModel.cs" />
     <Compile Include="Models\CourseDataModel.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\GuestModel.cs" />
     <Compile Include="Models\IEntity.cs" />
+    <Compile Include="Models\Link.cs" />
     <Compile Include="Models\MemberModel.cs" />
     <Compile Include="Models\ModelFactory.cs" />
     <Compile Include="Models\PlayerModel.cs" />

@@ -27,7 +27,12 @@ namespace Wags.Services.Controllers
                 var eventObj = BusinessLayer.GetEventDetails(id);
                 if (eventObj != null)
                 {
-                    return Ok(ModelFactory.Create(eventObj));
+                    var res = ModelFactory.Create(eventObj);
+                    res.AddLink("self", Link(""));
+                    res.AddLink("players", Link("players"));
+                    res.AddLink("bookings", Link("bookings"));
+                    res.AddLink("results", Link("results"));
+                    return Ok(res);
                 }
                 else
                 {

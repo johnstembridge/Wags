@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace Wags.Services.Models
 {
-    public class EventModel
+    public class EventModel:BaseModel
     { 
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public string Name { get; set; }
+        public bool IsOpen { get; internal set; }
         public decimal? MemberPrice { get; set; }
         public decimal? GuestPrice { get; set; }
         public decimal? DinnerPrice { get; set; }
@@ -20,7 +21,5 @@ namespace Wags.Services.Models
         public ICollection<RoundModel> Rounds { get; set; }
         public TrophyModel Trophy { get; set; }
         public ICollection<MemberModel> Organisers { get; set; }
-
-        public EntityState EntityState { get; set; }
    }
 }

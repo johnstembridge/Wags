@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Web.Services.Discovery;
 using Wags.DataModel;
 
 namespace Wags.Services.Models
@@ -12,6 +15,7 @@ namespace Wags.Services.Models
                 Id = eventData.Id,
                 Name = eventData.Name,
                 Date = eventData.Date,
+                IsOpen = eventData.BookingDeadline!=null && eventData.BookingDeadline >= DateTime.Today,
                 MemberPrice = eventData.MemberPrice,
                 GuestPrice = eventData.GuestPrice,
                 DinnerPrice = eventData.DinnerPrice,
