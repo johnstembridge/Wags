@@ -15,7 +15,7 @@ namespace Wags.Services.Models
                 Id = eventData.Id,
                 Name = eventData.Name,
                 Date = eventData.Date,
-                IsOpen = eventData.BookingDeadline!=null && eventData.BookingDeadline >= DateTime.Today,
+                IsOpen = eventData.IsOpen,
                 MemberPrice = eventData.MemberPrice,
                 GuestPrice = eventData.GuestPrice,
                 DinnerPrice = eventData.DinnerPrice,

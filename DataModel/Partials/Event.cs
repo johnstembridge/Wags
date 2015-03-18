@@ -32,6 +32,11 @@ namespace Wags.DataModel
             }
         }
 
+        public bool IsOpen
+        {
+            get { return BookingDeadline != null && BookingDeadline >= DateTime.Today; }
+        }
+
         private string ReportFileName
         {
             get { return String.Format("rp{0}.htm", Date.ToString("yyMMdd")); }
