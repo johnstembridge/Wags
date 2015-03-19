@@ -170,7 +170,7 @@ namespace Wags.Services.Controllers
                 }
                 else
                 {
-                    return StatusCode(HttpStatusCode.NotModified);
+                    return StatusCode(HttpStatusCode.NotFound);
                 }
             }
             catch (Exception ex)

@@ -16,7 +16,7 @@ namespace Wags.BusinessLayer
         IList<Booking> GetEventBookings(int eventId);
         Booking GetBooking(int id);
         Booking GetBookingForEventAndMember(int eventId, int memberId);
-        int AddBooking(Booking newBooking);
+        Booking AddBooking(Booking newBooking);
         void UpdateBooking(Booking newBooking);
         void DeleteBooking(int id);
 

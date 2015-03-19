@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web.Http;
 using Wags.Services.Models;
 
@@ -29,6 +28,7 @@ namespace Wags.Services.Controllers
                     var res = ModelFactory.Create(course);
                     res.AddLink("self", FullPath(""));
                     res.AddLink("rounds", FullPath("rounds"));
+                    res.AddLink("club", FullPath("../../clubs/" + res.Club.Id));
                     return Ok(res);
                 }
                 else
@@ -67,6 +67,7 @@ namespace Wags.Services.Controllers
         }
 
         // POST: api/Courses
+        [Route]
         public IHttpActionResult Post([FromBody]CourseModel value)
         {
             try
@@ -92,6 +93,7 @@ namespace Wags.Services.Controllers
         }
 
         // PUT: api/Courses/5
+        [Route("{id:int}")]
         public IHttpActionResult Put(int id, [FromBody]CourseModel value)
         {
             try
@@ -100,14 +102,14 @@ namespace Wags.Services.Controllers
                 if (updatedCourse == null)
                     return BadRequest("Could not read course details from body");
 
-                if (BusinessLayer.EventExists(id))
+                if (BusinessLayer.CourseExists(id))
                 {
                     BusinessLayer.UpdateCourse(updatedCourse);
                     return Ok();
                 }
                 else
                 {
-                    return StatusCode(HttpStatusCode.NotModified);
+                    return NotFound();
                 }
             }
             catch (Exception ex)
@@ -117,11 +119,12 @@ namespace Wags.Services.Controllers
         }
 
         // DELETE: api/Courses/5
+        [Route("{id:int}")]
         public IHttpActionResult Delete(int id)
         {
             try
             {
-                if (BusinessLayer.EventExists(id))
+                if (BusinessLayer.CourseExists(id))
                 {
                     BusinessLayer.DeleteCourse(id);
                     return Ok();

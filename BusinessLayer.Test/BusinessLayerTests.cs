@@ -231,8 +231,8 @@ namespace Wags.BusinessLayer.Test
         [TestMethod]
         public void UpdateBooking()
         {
-            var newId = bl.AddBooking(NewBooking());
-            var booking = bl.GetBooking(newId);
+            var newBooking = bl.AddBooking(NewBooking());
+            var booking = bl.GetBooking(newBooking.Id);
             booking.Comment = "updated comment 1";
             booking.EntityState=EntityState.Modified;
             bl.UpdateBooking(booking);
@@ -241,8 +241,8 @@ namespace Wags.BusinessLayer.Test
         [TestMethod]
         public void UpdateBookingWithNewGuest()
         {
-            var newId = bl.AddBooking(NewBooking());
-            var booking = bl.GetBooking(newId);
+            var newBooking = bl.AddBooking(NewBooking());
+            var booking = bl.GetBooking(newBooking.Id);
             var guest = new Guest() 
             {
                 Name = "Joe Blow",

@@ -8,7 +8,5 @@ namespace Wags.Services.Models
         public string Name { get; set; }
         public ICollection<CourseDataModel> CourseData { get; set; }
         public ClubModel Club { get; set; }
-
-        public EntityState EntityState { get; set; }
     }
 }

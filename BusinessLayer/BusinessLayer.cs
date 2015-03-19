@@ -324,6 +324,11 @@ namespace Wags.BusinessLayer
 
 #region Bookings
 
+        public bool BookingExists(int id)
+        {
+            return null != GetBooking(id);
+        }
+
         public IList<Booking> GetEventBookings(int eventId)
         {
             if (!EventExists(eventId))
@@ -356,14 +361,14 @@ namespace Wags.BusinessLayer
             return _bookingRepository.GetSingle(d => (d.Event.Id == eventId) && (d.Member.Id == memberId), nav);
         }
 
-        public int AddBooking(Booking booking)
+        public Booking AddBooking(Booking booking)
         {
             booking.Timestamp = DateTime.Now;
             booking.EntityState = EntityState.Added;
             foreach (var guest in booking.Guests)
                 guest.EntityState = EntityState.Added;
             _bookingRepository.Add(booking);
-            return booking.Id;
+            return booking;
         }
 
         public void UpdateBooking(Booking booking)
@@ -386,6 +391,11 @@ namespace Wags.BusinessLayer
 #endregion
 
 #region Courses
+
+        public bool CourseExists(int id)
+        {
+            return null != GetCourse(id);
+        }
 
         public IList<Course> GetAllCourses(string clubName)
         {

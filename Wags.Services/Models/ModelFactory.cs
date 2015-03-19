@@ -244,11 +244,22 @@ namespace Wags.Services.Models
            };
         }
 
+        public Guest Parse(GuestModel guestData)
+        {
+            return new Guest()
+            {
+                Id = guestData.Id,
+                Name = guestData.Name,
+                Handicap = guestData.Handicap
+           };
+        }
+
         public BookingModel Create(Booking bookingData)
         {
             return new BookingModel()
             {
                 Id = bookingData.Id,
+                EventId = bookingData.EventId,
                 Timestamp = bookingData.Timestamp,
                 Member = Create(bookingData.Member),
                 Attending = bookingData.Attending,
@@ -256,5 +267,20 @@ namespace Wags.Services.Models
                 Guests = bookingData.Guests.Select(Create).ToList()
             };
         }
+
+        public Booking Parse(BookingModel bookingData)
+        {
+            return new Booking()
+            {
+                Id = bookingData.Id,
+                EventId = bookingData.EventId,
+                Timestamp = bookingData.Timestamp,
+                Member = Parse(bookingData.Member),
+                Attending = bookingData.Attending,
+                Comment = bookingData.Comment,
+                Guests = bookingData.Guests.Select(Parse).ToList()
+            };
+        }
+
     }
 }

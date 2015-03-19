@@ -9,7 +9,7 @@ namespace Wags.Services.Models
         public DateTime Timestamp { get; set; }
         public bool Attending { get; set; }
         public string Comment { get; set; }
-        public EventModel Event { get; set; }
+        public int EventId { get; set; }
         public MemberModel Member { get; set; }
         public ICollection<GuestModel> Guests { get; set; }
     }
