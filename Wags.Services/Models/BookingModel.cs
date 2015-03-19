@@ -2,8 +2,8 @@ namespace Wags.Services.Models
 {
     using System;
     using System.Collections.Generic;
-    
-    public class BookingModel
+
+    public class BookingModel:BaseModel
     {
         public int Id { get; set; }
         public DateTime Timestamp { get; set; }
@@ -12,7 +12,5 @@ namespace Wags.Services.Models
         public EventModel Event { get; set; }
         public MemberModel Member { get; set; }
         public ICollection<GuestModel> Guests { get; set; }
-
-        public EntityState EntityState { get; set; }
     }
 }

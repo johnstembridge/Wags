@@ -33,6 +33,7 @@ namespace Wags.BusinessLayer
             _eventRepository = new EventRepository();
             _bookingRepository = new BookingRepository();
             _courseRepository = new CourseRepository();
+            _roundRepository = new RoundRepository();
             _historyRepository = new HistoryRepository();
         }
 
@@ -242,8 +243,9 @@ namespace Wags.BusinessLayer
                 d => d.Trophy,
                 d => d.Organisers,
                 d => d.Rounds,
+                d => d.Rounds.Select(c => c.Course.CourseData),
                 d => d.Rounds.Select(c => c.Course.Club)
-            };  
+           };  
             return _eventRepository.GetSingle(d => d.Id == id, nav);
         }
 
@@ -318,7 +320,7 @@ namespace Wags.BusinessLayer
             _eventRepository.Remove(ev);
         }
 
-        #endregion
+#endregion
 
 #region Bookings
 
@@ -380,12 +382,100 @@ namespace Wags.BusinessLayer
             foreach (var guest in booking.Guests)
                 guest.EntityState = EntityState.Deleted;
             _bookingRepository.Remove(booking);
-        }
-    }
-    
+        }    
 #endregion
 
-    //<Course>
+#region Courses
+
+        public IList<Course> GetAllCourses(string clubName)
+        {
+            if (clubName.Length==0)
+                return _courseRepository.GetAll().ToList();
+            else
+                return GetCoursesForClub(clubName);
+        }
+
+        public Course GetCourseDetails(int id)
+        {
+            var nav = new Expression<Func<Course, object>>[]
+            {
+                d => d.Club,
+                d => d.CourseData
+           };
+            return _courseRepository.GetSingle(d => d.Id == id, nav);
+        }
+
+        public Course GetCourseAll(int id)
+        {
+            var nav = new Expression<Func<Course, object>>[]
+            {
+                d => d.Club,
+                d => d.CourseData
+            };  
+            return _courseRepository.GetSingle(d => d.Id == id, nav);
+        }
+
+        public Course GetCourse(int id)
+        {
+            var nav = new Expression<Func<Course, object>>[] { }; 
+            return _courseRepository.GetSingle(d => d.Id == id, nav);
+        }
+
+        public IList<Round> GetCourseRounds(int courseId)
+        {
+            var nav = new Expression<Func<Round, object>>[] { }; 
+            return _roundRepository.GetList(d => d.CourseId == courseId, nav);
+        }
+
+       public IList<Course> GetCoursesForClub(string name)
+        {
+            var nav = new Expression<Func<Course, object>>[]
+            {
+                d => d.Club,
+                d => d.CourseData
+           };            return _courseRepository.GetList(d => d.Club.Name == name, nav);
+        }
+
+        public Course AddCourse(Course newCourse)
+        {
+            newCourse.EntityState = EntityState.Added;
+            foreach (var courseData in newCourse.CourseData)
+                courseData.EntityState = EntityState.Added;
+            try
+            {
+                _courseRepository.Add(newCourse);
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException.ToString().Contains("duplicate"))
+                    newCourse = null;
+                else
+                    throw;
+            }
+            return newCourse;
+      }
+
+        public void UpdateCourse(Course course)
+        {
+            _courseRepository.Update(course);
+        }
+
+        public void DeleteCourse(int id)
+        {
+            var c = GetCourseAll(id);
+            if (c == null)
+                throw new ArgumentException(string.Format("Course {0} not found", id));
+            c.EntityState = EntityState.Deleted;
+            foreach (var courseData in c.CourseData)
+                courseData.EntityState = EntityState.Deleted;
+            foreach (var round in c.Rounds)
+                round.EntityState = EntityState.Deleted;
+
+            _courseRepository.Remove(c);
+        }
+
+#endregion
+
     //<CourseData> 
     //<Trophy>
 
@@ -395,4 +485,7 @@ namespace Wags.BusinessLayer
     //<Score>
     //<Club> 
     //<Round>
+
+    }
+
 }

@@ -2,7 +2,7 @@ namespace Wags.Services.Models
 {
     using System.Collections.Generic;
     
-    public class CourseModel
+    public class CourseModel:BaseModel
     {   
         public int Id { get; set; }
         public string Name { get; set; }

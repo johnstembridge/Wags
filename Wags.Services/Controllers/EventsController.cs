@@ -28,10 +28,10 @@ namespace Wags.Services.Controllers
                 if (eventObj != null)
                 {
                     var res = ModelFactory.Create(eventObj);
-                    res.AddLink("self", Link(""));
-                    res.AddLink("players", Link("players"));
-                    res.AddLink("bookings", Link("bookings"));
-                    res.AddLink("results", Link("results"));
+                    res.AddLink("self", FullPath(""));
+                    res.AddLink("players", FullPath("players"));
+                    res.AddLink("bookings", FullPath("bookings"));
+                    res.AddLink("results", FullPath("results"));
                     return Ok(res);
                 }
                 else

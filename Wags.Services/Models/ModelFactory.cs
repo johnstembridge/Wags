@@ -59,8 +59,7 @@ namespace Wags.Services.Models
             {
                 Id = roundData.Id,
                 Date = roundData.Date,
-                CourseId = roundData.CourseId,
-                Course = Create(roundData.Course)
+                CourseId = roundData.CourseId
             };
         }
 
