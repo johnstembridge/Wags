@@ -120,6 +120,8 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Models\ClubModel.cs" />
+    <Compile Include="Models\EventResultModel.cs" />
+    <Compile Include="Models\ScoreModel.cs" />
     <Compile Include="Models\CourseDataModel.cs" />
     <Compile Include="Models\CourseModel.cs" />
     <Compile Include="Models\EventModel.cs" />

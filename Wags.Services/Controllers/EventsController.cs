@@ -101,19 +101,7 @@ namespace Wags.Services.Controllers
                 var e = BusinessLayer.GetEventResult(id);
                 if (e != null)
                 {
-                    var res = new Report()
-                    {
-                        Title = e.ToString(),
-                        Headings = new[] { "Position", "Player", "Points", "Strokes", "Handicap", "Status" },
-                        Data = (e.Rounds.Count > 0) ?
-                            e.Rounds
-                                .First()
-                                .Scores
-                                .OrderBy(s => s.Position)
-                                .Select(s => FormatScore(s, e.Date)).ToList()
-                            :
-                            new List<object[]>()
-                    };
+                    var res = ModelFactory.CreateEventResult(e);
                     return Ok(res);
                 }
                 else
@@ -199,19 +187,6 @@ namespace Wags.Services.Controllers
             {
                 return BadRequest(ex.ToString());
             }
-        }
-
-        private object[] FormatScore(Score score, DateTime date)
-        {
-            return new object[]
-            {
-                score.Position,
-                score.Player.FullName,
-                score.Points,
-                score.Shots,
-                score.Player.StatusAtDate(date).Handicap,
-                score.Player.StatusAtDate(date).Status.ToString()
-            };
         }
 
     }

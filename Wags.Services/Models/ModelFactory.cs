@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Web.Services.Discovery;
+﻿using System.Linq;
 using Wags.DataModel;
 
 namespace Wags.Services.Models
 {
     public class ModelFactory
     {
+#region Event
         public EventModel Create(Event eventData)
         {
             return new EventModel()
@@ -27,7 +25,7 @@ namespace Wags.Services.Models
                 Rounds = eventData.Rounds.Select(Create).ToList(),
                 Trophy = (eventData.Trophy != null) ? Create(eventData.Trophy) : null,
                 Organisers = eventData.Organisers.Select(Create).ToList(),
-                EntityState = (EntityState) eventData.EntityState
+                EntityState = (EntityState)eventData.EntityState
             };
         }
 
@@ -49,18 +47,22 @@ namespace Wags.Services.Models
                 Rounds = eventData.Rounds.Select(Parse).ToList(),
                 Trophy = Parse(eventData.Trophy),
                 Organisers = eventData.Organisers.Select(Parse).ToList(),
-                EntityState = (DataModel.EntityState) eventData.EntityState
+                EntityState = (DataModel.EntityState)eventData.EntityState
             };
         }
-
+        
+#endregion
+        
+#region Round
         public RoundModel Create(Round roundData)
         {
             return new RoundModel()
             {
                 Id = roundData.Id,
                 Date = roundData.Date,
-                CourseId = roundData.CourseId
-            };
+                Course = Create(roundData.Course),
+                Scores = roundData.Scores.Select(Create).ToList()
+           };
         }
 
         public Round Parse(RoundModel roundData)
@@ -69,12 +71,15 @@ namespace Wags.Services.Models
             {
                 Id = roundData.Id,
                 Date = roundData.Date,
-                CourseId = roundData.CourseId,
-                Course = Parse(roundData.Course)
+                Course = Parse(roundData.Course),
+                Scores = roundData.Scores.Select(Parse).ToList()
             };
         }
+        
+#endregion
 
-        public CourseModel Create(Course courseData)
+#region Course
+		public CourseModel Create(Course courseData)
         {
             return new CourseModel()
             {
@@ -97,6 +102,9 @@ namespace Wags.Services.Models
             };
         }
 
+#endregion
+
+#region CourseData
         public CourseDataModel Create(CourseData courseData)
         {
             return new CourseDataModel()
@@ -118,7 +126,9 @@ namespace Wags.Services.Models
                 Par = courseData.Par
             };
         }
+#endregion
 
+#region Club
         public ClubModel Create(Club clubData)
         {
             return new ClubModel()
@@ -143,9 +153,11 @@ namespace Wags.Services.Models
                 Address = Parse(clubData.Address),
                 Directions = clubData.Directions
             };
-        }
+        }      
+#endregion
 
-       public TrophyModel Create(Trophy trophyData)
+#region Trophy
+		public TrophyModel Create(Trophy trophyData)
         {
             return new TrophyModel()
             {
@@ -162,7 +174,9 @@ namespace Wags.Services.Models
                 Name = trophyData.Name
             };
         }
+#endregion
 
+#region Member
         public MemberModel Create(Member memberData)
         {
             return new MemberModel()
@@ -188,8 +202,10 @@ namespace Wags.Services.Models
                 Address = Parse(memberData.Address)
            };
         }
+#endregion
 
-        public Address Create(DataModel.Address memberData)
+#region Address
+		public Address Create(DataModel.Address memberData)
         {
             return new Address()
             {
@@ -210,7 +226,9 @@ namespace Wags.Services.Models
                 PostCode = memberData.PostCode
             };
         }
+#endregion
 
+#region Player
         public PlayerModel Create(Player playerData)
         {
             return new PlayerModel()
@@ -220,8 +238,11 @@ namespace Wags.Services.Models
                 LastName = playerData.LastName,
                 Handicap = playerData.CurrentStatus.Handicap,
                 Status = Create(playerData.CurrentStatus)
-           };
+            };
         }
+ #endregion
+
+#region Status
 
         public StatusModel Create(History statusData)
         {
@@ -229,11 +250,13 @@ namespace Wags.Services.Models
             {
                 Id = statusData.Id,
                 Date = statusData.Date,
-                Status = (PlayerStatus) statusData.Status,
+                Status = (PlayerStatus)statusData.Status,
                 Handicap = statusData.Handicap
-           };
+            };
         }
+ #endregion
 
+#region Guest
         public GuestModel Create(Guest guestData)
         {
             return new GuestModel()
@@ -253,7 +276,9 @@ namespace Wags.Services.Models
                 Handicap = guestData.Handicap
            };
         }
+#endregion
 
+#region Booking
         public BookingModel Create(Booking bookingData)
         {
             return new BookingModel()
@@ -281,6 +306,59 @@ namespace Wags.Services.Models
                 Guests = bookingData.Guests.Select(Parse).ToList()
             };
         }
+#endregion
+    
+#region Score
+        public ScoreModel Create(Score scoreData)
+        {
+            return new ScoreModel()
+            {
+                Id = scoreData.Id,
+                PlayerId = scoreData.Player.Id,
+                Player = scoreData.Player.FullName,
+                Status = Create(scoreData.Player.StatusAtDate(scoreData.Round.Date)),
+                Position = scoreData.Position,
+                Points = scoreData.Points,
+                Shots = scoreData.Shots
+            };
+        }
 
+        public Score Parse(ScoreModel scoreData)
+        {
+            return new Score()
+            {
+                Id = scoreData.Id,
+                PlayerId = scoreData.PlayerId,
+                Position = scoreData.Position,
+                Points = scoreData.Points,
+                Shots = scoreData.Shots
+            };
+        }
+#endregion
+    
+#region EventResult
+        public EventResultModel CreateEventResult(Event eventData)
+        {
+            return new EventResultModel()
+            {
+                EventId = eventData.Id,
+                Date = eventData.Date,
+                Name = eventData.Name,
+                Rounds = eventData.Rounds.Select(Create).ToList()
+            };
+        }
+
+        public Event ParseEventResult(EventResultModel eventData)
+        {
+            return new Event()
+            {
+                Id = eventData.EventId,
+                Date = eventData.Date,
+                Name = eventData.Name,
+                Rounds = eventData.Rounds.Select(Parse).ToList()
+            };
+        }
+#endregion
+    
     }
 }

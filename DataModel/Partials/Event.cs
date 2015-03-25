@@ -12,7 +12,7 @@ namespace Wags.DataModel
             return Name + " " + Date.Date.ToShortDateString();
         }
 
-        public Uri Result
+        public Uri ResultUri
         {
             get
             {
@@ -22,7 +22,7 @@ namespace Wags.DataModel
             }
         }
 
-        public Uri Report
+        public Uri ReportUri
         {
             get
             {

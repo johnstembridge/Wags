@@ -10,7 +10,7 @@ namespace Wags.BusinessLayer
     public class BusinessLayer : IBusinessLayer
     {
 
-    #region Repositiories
+#region Repositiories
         private readonly IPlayerRepository _playerRepository;
         private readonly IMemberRepository _memberRepository;
         private readonly ICourseRepository _courseRepository;
@@ -24,7 +24,7 @@ namespace Wags.BusinessLayer
         private readonly IScoreRepository _scoreRepository;
         private readonly IClubRepository _clubRepository;
         private readonly IRoundRepository _roundRepository;       
-    #endregion
+#endregion
 
         public BusinessLayer()
         {
@@ -275,6 +275,7 @@ namespace Wags.BusinessLayer
             {
                 d => d.Rounds,
                 d => d.Rounds.Select(r => r.Course),
+                d => d.Rounds.Select(r => r.Course.Club),
                 d => d.Rounds.Select(r => r.Scores),
                 d => d.Rounds.Select(r => r.Scores.Select(s => s.Player)),
                 d => d.Rounds.Select(r => r.Scores.Select(s => s.Player).Select(p => p.Histories))
