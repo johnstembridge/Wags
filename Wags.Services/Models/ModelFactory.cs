@@ -61,7 +61,8 @@ namespace Wags.Services.Models
                 Id = roundData.Id,
                 Date = roundData.Date,
                 Course = Create(roundData.Course),
-                Scores = roundData.Scores.Select(Create).ToList()
+                Scores = roundData.Scores.Select(Create).ToList(),
+                EntityState = (EntityState)roundData.EntityState
            };
         }
 
@@ -72,7 +73,8 @@ namespace Wags.Services.Models
                 Id = roundData.Id,
                 Date = roundData.Date,
                 Course = Parse(roundData.Course),
-                Scores = roundData.Scores.Select(Parse).ToList()
+                Scores = roundData.Scores.Select(Parse).ToList(),
+                EntityState = (DataModel.EntityState)roundData.EntityState
             };
         }
         
@@ -86,19 +88,19 @@ namespace Wags.Services.Models
                 Id = courseData.Id,
                 Name = courseData.Name,
                 Club = Create(courseData.Club),
-                CourseData = courseData.CourseData.Select(Create).ToList()
+                CourseData = courseData.CourseData.Select(Create).ToList(),
+                EntityState = (EntityState)courseData.EntityState
             };
         }
 
         public Course Parse(CourseModel courseData)
         {
-            if (courseData == null)
-                return null;
             return new Course()
             {
                 Id = courseData.Id,
                 Name = courseData.Name,
-                Club = Parse(courseData.Club)
+                Club = Parse(courseData.Club),
+                EntityState = (DataModel.EntityState)courseData.EntityState
             };
         }
 
@@ -112,7 +114,8 @@ namespace Wags.Services.Models
                 Id = courseData.Id,
                 EffectiveDate = courseData.EffectiveDate,
                 SSS = courseData.SSS,
-                Par = courseData.Par
+                Par = courseData.Par,
+                EntityState = (EntityState)courseData.EntityState
             };
         }
 
@@ -123,7 +126,8 @@ namespace Wags.Services.Models
                 Id = courseData.Id,
                 EffectiveDate = courseData.EffectiveDate,
                 SSS = courseData.SSS,
-                Par = courseData.Par
+                Par = courseData.Par,
+                EntityState = (DataModel.EntityState)courseData.EntityState
             };
         }
 #endregion
@@ -138,7 +142,8 @@ namespace Wags.Services.Models
                 Url = clubData.Url,
                 Phone = clubData.Phone,
                 Address = Create(clubData.Address),
-                Directions = clubData.Directions
+                Directions = clubData.Directions,
+                EntityState = (EntityState)clubData.EntityState
             };
         }
 
@@ -151,18 +156,20 @@ namespace Wags.Services.Models
                 Url = clubData.Url,
                 Phone = clubData.Phone,
                 Address = Parse(clubData.Address),
-                Directions = clubData.Directions
+                Directions = clubData.Directions,
+                EntityState = (DataModel.EntityState) clubData.EntityState
             };
         }      
 #endregion
 
 #region Trophy
-		public TrophyModel Create(Trophy trophyData)
+        public TrophyModel Create(Trophy trophyData)
         {
             return new TrophyModel()
             {
                 Id = trophyData.Id,
-                Name = trophyData.Name
+                Name = trophyData.Name,
+                EntityState = (EntityState)trophyData.EntityState
             };
         }
 
@@ -171,7 +178,8 @@ namespace Wags.Services.Models
             return new Trophy()
             {
                 Id = trophyData.Id,
-                Name = trophyData.Name
+                Name = trophyData.Name,
+                EntityState = (DataModel.EntityState)trophyData.EntityState
             };
         }
 #endregion
@@ -186,7 +194,9 @@ namespace Wags.Services.Models
                 LastName = memberData.LastName,
                 Email = memberData.Email,
                 Phone = memberData.Phone,
-                Address = Create(memberData.Address)
+                Address = Create(memberData.Address),
+                Status = Create(memberData.CurrentStatus),
+                EntityState = (EntityState) memberData.EntityState
            };
         }
 
@@ -199,7 +209,8 @@ namespace Wags.Services.Models
                 LastName = memberData.LastName,
                 Email = memberData.Email,
                 Phone = memberData.Phone,
-                Address = Parse(memberData.Address)
+                Address = Parse(memberData.Address),
+                EntityState = (DataModel.EntityState) memberData.EntityState
            };
         }
 #endregion
@@ -236,8 +247,19 @@ namespace Wags.Services.Models
                 Id = playerData.Id,
                 FirstName = playerData.FirstName,
                 LastName = playerData.LastName,
-                Handicap = playerData.CurrentStatus.Handicap,
-                Status = Create(playerData.CurrentStatus)
+                Status = Create(playerData.CurrentStatus),
+                EntityState = (EntityState) playerData.EntityState
+            };
+        }
+
+        public Player Parse(PlayerModel playerData)
+        {
+            return new Player()
+            {
+                Id = playerData.Id,
+                FirstName = playerData.FirstName,
+                LastName = playerData.LastName,
+                EntityState = (DataModel.EntityState)playerData.EntityState
             };
         }
  #endregion
@@ -250,9 +272,22 @@ namespace Wags.Services.Models
             {
                 Id = statusData.Id,
                 Date = statusData.Date,
-                Status = (PlayerStatus)statusData.Status,
-                Handicap = statusData.Handicap
+                Status = (PlayerStatus) statusData.Status,
+                Handicap = statusData.Handicap,
+                EntityState = (EntityState) statusData.EntityState
             };
+        }
+
+        public History Parse(StatusModel statusData)
+        {
+            return new History()
+            {
+                Id = statusData.Id,
+                Date = statusData.Date,
+                Status = (DataModel.PlayerStatus)statusData.Status,
+                Handicap = statusData.Handicap,
+                EntityState = (DataModel.EntityState)statusData.EntityState
+           };
         }
  #endregion
 
@@ -263,7 +298,8 @@ namespace Wags.Services.Models
             {
                 Id = guestData.Id,
                 Name = guestData.Name,
-                Handicap = guestData.Handicap
+                Handicap = guestData.Handicap,
+                EntityState = (EntityState)guestData.EntityState
            };
         }
 
@@ -273,7 +309,8 @@ namespace Wags.Services.Models
             {
                 Id = guestData.Id,
                 Name = guestData.Name,
-                Handicap = guestData.Handicap
+                Handicap = guestData.Handicap,
+                EntityState = (DataModel.EntityState)guestData.EntityState
            };
         }
 #endregion
@@ -289,7 +326,8 @@ namespace Wags.Services.Models
                 Member = Create(bookingData.Member),
                 Attending = bookingData.Attending,
                 Comment = bookingData.Comment,
-                Guests = bookingData.Guests.Select(Create).ToList()
+                Guests = bookingData.Guests.Select(Create).ToList(),
+                EntityState = (EntityState)bookingData.EntityState
             };
         }
 
@@ -303,7 +341,8 @@ namespace Wags.Services.Models
                 Member = Parse(bookingData.Member),
                 Attending = bookingData.Attending,
                 Comment = bookingData.Comment,
-                Guests = bookingData.Guests.Select(Parse).ToList()
+                Guests = bookingData.Guests.Select(Parse).ToList(),
+                EntityState = (DataModel.EntityState)bookingData.EntityState
             };
         }
 #endregion
@@ -314,12 +353,14 @@ namespace Wags.Services.Models
             return new ScoreModel()
             {
                 Id = scoreData.Id,
-                PlayerId = scoreData.Player.Id,
+                RoundId = scoreData.RoundId,
+                PlayerId = scoreData.PlayerId,
                 Player = scoreData.Player.FullName,
                 Status = Create(scoreData.Player.StatusAtDate(scoreData.Round.Date)),
                 Position = scoreData.Position,
                 Points = scoreData.Points,
-                Shots = scoreData.Shots
+                Shots = scoreData.Shots,
+                EntityState = (EntityState)scoreData.EntityState
             };
         }
 
@@ -328,10 +369,12 @@ namespace Wags.Services.Models
             return new Score()
             {
                 Id = scoreData.Id,
+                RoundId = scoreData.RoundId,
                 PlayerId = scoreData.PlayerId,
                 Position = scoreData.Position,
                 Points = scoreData.Points,
-                Shots = scoreData.Shots
+                Shots = scoreData.Shots,
+                EntityState = (DataModel.EntityState)scoreData.EntityState
             };
         }
 #endregion
@@ -344,7 +387,8 @@ namespace Wags.Services.Models
                 EventId = eventData.Id,
                 Date = eventData.Date,
                 Name = eventData.Name,
-                Rounds = eventData.Rounds.Select(Create).ToList()
+                Rounds = eventData.Rounds.Select(Create).ToList(),
+                EntityState = (EntityState)eventData.EntityState
             };
         }
 
@@ -355,7 +399,8 @@ namespace Wags.Services.Models
                 Id = eventData.EventId,
                 Date = eventData.Date,
                 Name = eventData.Name,
-                Rounds = eventData.Rounds.Select(Parse).ToList()
+                Rounds = eventData.Rounds.Select(Parse).ToList(),
+                EntityState = (DataModel.EntityState)eventData.EntityState
             };
         }
 #endregion

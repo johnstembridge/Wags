@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
-using Wags.DataModel;
 using Wags.Services.Models;
 
 namespace Wags.Services.Controllers

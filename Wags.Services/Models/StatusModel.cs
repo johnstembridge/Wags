@@ -1,6 +1,6 @@
 namespace Wags.Services.Models
 {
-    public class StatusModel
+    public class StatusModel:BaseModel
     {
         public int Id { get; set; }
         public System.DateTime Date { get; set; }

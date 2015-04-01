@@ -1,6 +1,6 @@
 namespace Wags.Services.Models
 {  
-    public class ClubModel
+    public class ClubModel:BaseModel
     {   
         public int Id { get; set; }
         public string Name { get; set; }

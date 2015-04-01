@@ -17,10 +17,7 @@ namespace Wags.Services.Controllers
                 var booking = BusinessLayer.GetBooking(id);
                 if (booking != null)
                 {
-                    var res = ModelFactory.Create(booking);
-                    res.AddLink("self", FullPath(""));
-                    res.AddLink("event", FullPath("../../events/" + res.EventId));
-                    return Ok(res);
+                    return Ok(MakeBookingModel(booking));
                 }
                 else
                 {
@@ -34,12 +31,27 @@ namespace Wags.Services.Controllers
             } 
         }
 
-        // GET api/bookings?eventId=e&memberId=m
+        // GET api/bookings?eventId=e&playerId=m
         [Route("")]
-        public Booking GetBookingForEventAndMember(int eventId = 0, int memberId = 0)
+        public IHttpActionResult GetBookingForEventAndMember(int eventId = 0, int memberId = 0)
         {
-            var b = BusinessLayer.GetBookingForEventAndMember(eventId, memberId);
-            return b;
+            try
+            {
+                var booking = BusinessLayer.GetBookingForEventAndMember(eventId, memberId);
+                if (booking != null)
+                {
+                    return Ok(MakeBookingModel(booking));
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            } 
         }
 
         // POST api/bookings
@@ -54,7 +66,7 @@ namespace Wags.Services.Controllers
                 var res = BusinessLayer.AddBooking(newBooking);
                 if (res != null)
                 {
-                    var response = ModelFactory.Create(BusinessLayer.GetCourseAll(res.Id));
+                    var response = ModelFactory.Create(BusinessLayer.GetBooking(res.Id));
                     return CreatedAtRoute("DefaultApi", new { controller = "bookings", id = res.Id }, response);
                 }
                 else
@@ -114,6 +126,15 @@ namespace Wags.Services.Controllers
             {
                 return BadRequest(ex.ToString());
             }
+        }
+
+        BookingModel MakeBookingModel(Booking booking)
+        {
+            var res = ModelFactory.Create(booking);
+            res.AddLink("self", FullPath(""));
+            res.AddLink("event", FullPath("../../events/" + res.EventId));
+            return res;
+
         }
     }
 }

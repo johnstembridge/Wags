@@ -26,7 +26,7 @@ namespace Wags.BusinessLayer
         Member GetMemberAllInfo(int id);
         IList<History> GetMemberHistory(int id);
         History GetMemberCurrentStatus(int id);
-        int AddMember(Member newMember);
+        Member AddMember(Member newMember);
         void UpdateMember(Member newMember);
         void DeleteMember(int id);
 

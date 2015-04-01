@@ -35,11 +35,17 @@ namespace Wags.BusinessLayer
             _courseRepository = new CourseRepository();
             _roundRepository = new RoundRepository();
             _historyRepository = new HistoryRepository();
-        }
+            _scoreRepository = new ScoreRepository();
+       }
 
 #region Members
 
-        public IList<Member> GetAllMembers(bool current=true)
+        public bool MemberExists(int id)
+        {
+            return null != GetMember(id);
+        }
+
+        public IList<Member> GetAllMembers(bool current = true)
         {
             return current? GetAllCurrentMembers() : _memberRepository.GetAll();
         }
@@ -58,7 +64,11 @@ namespace Wags.BusinessLayer
 
         public Member GetMember(int id)
         {
-            return _memberRepository.GetSingle(d => d.Id == id);
+            var nav = new Expression<Func<Member, object>>[] 
+            {
+                 d => d.Histories
+            };            
+            return _memberRepository.GetSingle(d => d.Id == id, nav);
         }
 
         public Member GetMemberByName(string name)
@@ -99,10 +109,21 @@ namespace Wags.BusinessLayer
             return _memberRepository.GetSingle(m => m.Id == id, nav).CurrentStatus;
         }
 
-        public int AddMember(Member member)
+        public Member AddMember(Member newMember)
         {
-            _memberRepository.Add(member);
-            return member.Id;
+            newMember.EntityState = EntityState.Added;
+            try
+            {
+                _memberRepository.Add(newMember);
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException.ToString().Contains("duplicate"))
+                    newMember = null;
+                else
+                    throw;
+            }
+            return newMember;
         }
 
         public void UpdateMember(Member member)
@@ -444,7 +465,8 @@ namespace Wags.BusinessLayer
             {
                 d => d.Club,
                 d => d.CourseData
-           };            return _courseRepository.GetList(d => d.Club.Name == name, nav);
+            };            
+            return _courseRepository.GetList(d => d.Club.Name == name, nav);
         }
 
         public Course AddCourse(Course newCourse)
@@ -487,13 +509,64 @@ namespace Wags.BusinessLayer
 
 #endregion
 
+#region Scores
+
+        public bool ScoreExists(int id)
+        {
+            return null != GetScore(id);
+        }
+
+        public Score GetScore(int id)
+        {
+            var nav = new Expression<Func<Score, object>>[]
+            {
+                d => d.Player, 
+                d=>d.Player.Histories, 
+                d => d.Round
+            };
+            return _scoreRepository.GetSingle(d => d.Id == id, nav);
+        }
+
+        public Score GetScoreForRoundAndPlayer(int roundId, int playerId)
+        {
+            var nav = new Expression<Func<Score, object>>[] 
+            {
+                d => d.Player, 
+                d=>d.Player.Histories, 
+                d => d.Round
+            };
+            return _scoreRepository.GetSingle(d => (d.RoundId == roundId) && (d.PlayerId == playerId), nav);
+        }
+
+        public Score AddScore(Score score)
+        {
+            score.EntityState = EntityState.Added;
+            _scoreRepository.Add(score);
+            return score;
+        }
+
+        public void UpdateScore(Score score)
+        {
+            score.EntityState = EntityState.Modified;
+            _scoreRepository.Update(score);
+        }
+
+        public void DeleteScore(int id)
+        {
+            var score = GetScore(id);
+            if (score == null)
+                throw new ArgumentException(string.Format("Score {0} not found", id));
+            score.EntityState = EntityState.Deleted;
+            _scoreRepository.Remove(score);
+        }
+#endregion
+
     //<CourseData> 
     //<Trophy>
 
     //<Guest>
     //<History>
     //<Transaction>
-    //<Score>
     //<Club> 
     //<Round>
 

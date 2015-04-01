@@ -3,6 +3,7 @@
     public class ScoreModel:BaseModel
     {
         public int Id { get; set; }
+        public int RoundId { get; set; }
         public int PlayerId { get; set; }
         public string Player { get; internal set; }
         public StatusModel Status { get; internal set; }
